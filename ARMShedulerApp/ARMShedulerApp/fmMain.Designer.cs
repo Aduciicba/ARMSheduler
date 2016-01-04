@@ -37,6 +37,7 @@
             this.gridColumn2 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn4 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn5 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.repositoryItemMemoEdit2 = new DevExpress.XtraEditors.Repository.RepositoryItemMemoEdit();
             this.tpSettings = new DevExpress.XtraTab.XtraTabPage();
             this.btnSaveSettings = new DevExpress.XtraEditors.SimpleButton();
             this.gcMailSettings = new DevExpress.XtraEditors.GroupControl();
@@ -56,6 +57,7 @@
             this.labelControl1 = new DevExpress.XtraEditors.LabelControl();
             this.beArmDbPath = new DevExpress.XtraEditors.ButtonEdit();
             this.tpImport = new DevExpress.XtraTab.XtraTabPage();
+            this.btnSaveImport = new DevExpress.XtraEditors.SimpleButton();
             this.labelControl11 = new DevExpress.XtraEditors.LabelControl();
             this.btnDelImportEmail = new DevExpress.XtraEditors.SimpleButton();
             this.btnEditImportEmail = new DevExpress.XtraEditors.SimpleButton();
@@ -68,6 +70,7 @@
             this.teImportTime = new DevExpress.XtraEditors.TimeEdit();
             this.wdImportWeekDays = new DevExpress.XtraScheduler.UI.WeekDaysCheckEdit();
             this.tpMail = new DevExpress.XtraTab.XtraTabPage();
+            this.btnSaveMail = new DevExpress.XtraEditors.SimpleButton();
             this.labelControl12 = new DevExpress.XtraEditors.LabelControl();
             this.btnDelMailEmail = new DevExpress.XtraEditors.SimpleButton();
             this.btnEditMailEmail = new DevExpress.XtraEditors.SimpleButton();
@@ -76,20 +79,16 @@
             this.labelControl13 = new DevExpress.XtraEditors.LabelControl();
             this.labelControl14 = new DevExpress.XtraEditors.LabelControl();
             this.teMailTime = new DevExpress.XtraEditors.TimeEdit();
-            this.wdMMailWeekDays = new DevExpress.XtraScheduler.UI.WeekDaysCheckEdit();
+            this.wdMailWeekDays = new DevExpress.XtraScheduler.UI.WeekDaysCheckEdit();
             this.ofdDbPath = new System.Windows.Forms.OpenFileDialog();
             this.fbdImportDir = new System.Windows.Forms.FolderBrowserDialog();
-            this.repositoryItemMemoEdit2 = new DevExpress.XtraEditors.Repository.RepositoryItemMemoEdit();
-            this.deFrom = new DevExpress.XtraEditors.DateEdit();
-            this.labelControl15 = new DevExpress.XtraEditors.LabelControl();
-            this.labelControl16 = new DevExpress.XtraEditors.LabelControl();
-            this.deTo = new DevExpress.XtraEditors.DateEdit();
             ((System.ComponentModel.ISupportInitialize)(this.tcMain)).BeginInit();
             this.tcMain.SuspendLayout();
             this.tpEventLog.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gcEventsLog)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gvEventsLog)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemMemoEdit1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemMemoEdit2)).BeginInit();
             this.tpSettings.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gcMailSettings)).BeginInit();
             this.gcMailSettings.SuspendLayout();
@@ -107,12 +106,7 @@
             this.tpMail.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.lbMailEmails)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.teMailTime.Properties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.wdMMailWeekDays)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemMemoEdit2)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.deFrom.Properties.CalendarTimeProperties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.deFrom.Properties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.deTo.Properties.CalendarTimeProperties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.deTo.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.wdMailWeekDays)).BeginInit();
             this.SuspendLayout();
             // 
             // tcMain
@@ -131,13 +125,10 @@
             this.tpImport,
             this.tpMail});
             this.tcMain.SelectedPageChanged += new DevExpress.XtraTab.TabPageChangedEventHandler(this.tcMain_SelectedPageChanged);
+            this.tcMain.SelectedPageChanging += new DevExpress.XtraTab.TabPageChangingEventHandler(this.tcMain_SelectedPageChanging);
             // 
             // tpEventLog
             // 
-            this.tpEventLog.Controls.Add(this.deTo);
-            this.tpEventLog.Controls.Add(this.labelControl16);
-            this.tpEventLog.Controls.Add(this.labelControl15);
-            this.tpEventLog.Controls.Add(this.deFrom);
             this.tpEventLog.Controls.Add(this.gcEventsLog);
             this.tpEventLog.Name = "tpEventLog";
             this.tpEventLog.Size = new System.Drawing.Size(532, 415);
@@ -145,14 +136,14 @@
             // 
             // gcEventsLog
             // 
-            this.gcEventsLog.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.gcEventsLog.Location = new System.Drawing.Point(0, 37);
+            this.gcEventsLog.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.gcEventsLog.Location = new System.Drawing.Point(0, 0);
             this.gcEventsLog.MainView = this.gvEventsLog;
             this.gcEventsLog.Name = "gcEventsLog";
             this.gcEventsLog.RepositoryItems.AddRange(new DevExpress.XtraEditors.Repository.RepositoryItem[] {
             this.repositoryItemMemoEdit1,
             this.repositoryItemMemoEdit2});
-            this.gcEventsLog.Size = new System.Drawing.Size(532, 378);
+            this.gcEventsLog.Size = new System.Drawing.Size(532, 415);
             this.gcEventsLog.TabIndex = 0;
             this.gcEventsLog.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.gvEventsLog});
@@ -228,6 +219,10 @@
             this.gridColumn5.VisibleIndex = 3;
             this.gridColumn5.Width = 132;
             // 
+            // repositoryItemMemoEdit2
+            // 
+            this.repositoryItemMemoEdit2.Name = "repositoryItemMemoEdit2";
+            // 
             // tpSettings
             // 
             this.tpSettings.Controls.Add(this.btnSaveSettings);
@@ -243,9 +238,9 @@
             // btnSaveSettings
             // 
             this.btnSaveSettings.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnSaveSettings.Location = new System.Drawing.Point(439, 378);
+            this.btnSaveSettings.Location = new System.Drawing.Point(414, 385);
             this.btnSaveSettings.Name = "btnSaveSettings";
-            this.btnSaveSettings.Size = new System.Drawing.Size(75, 23);
+            this.btnSaveSettings.Size = new System.Drawing.Size(111, 23);
             this.btnSaveSettings.TabIndex = 14;
             this.btnSaveSettings.Text = "Сохранить";
             this.btnSaveSettings.Click += new System.EventHandler(this.btnSaveSettings_Click);
@@ -266,16 +261,16 @@
             this.gcMailSettings.Controls.Add(this.teMailLogin);
             this.gcMailSettings.Controls.Add(this.teEmail);
             this.gcMailSettings.Controls.Add(this.labelControl3);
-            this.gcMailSettings.Location = new System.Drawing.Point(20, 130);
+            this.gcMailSettings.Location = new System.Drawing.Point(12, 130);
             this.gcMailSettings.Name = "gcMailSettings";
-            this.gcMailSettings.Size = new System.Drawing.Size(494, 242);
+            this.gcMailSettings.Size = new System.Drawing.Size(513, 249);
             this.gcMailSettings.TabIndex = 4;
             this.gcMailSettings.Text = "Настройки электронной почты";
             // 
             // btnTestMail
             // 
             this.btnTestMail.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnTestMail.Location = new System.Drawing.Point(7, 214);
+            this.btnTestMail.Location = new System.Drawing.Point(7, 221);
             this.btnTestMail.Name = "btnTestMail";
             this.btnTestMail.Size = new System.Drawing.Size(125, 23);
             this.btnTestMail.TabIndex = 13;
@@ -289,7 +284,7 @@
             this.teMailPassword.Location = new System.Drawing.Point(220, 146);
             this.teMailPassword.Name = "teMailPassword";
             this.teMailPassword.PasswordChar = '*';
-            this.teMailPassword.Size = new System.Drawing.Size(269, 20);
+            this.teMailPassword.Size = new System.Drawing.Size(288, 20);
             this.teMailPassword.TabIndex = 12;
             // 
             // labelControl7
@@ -330,7 +325,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.teMailServer.Location = new System.Drawing.Point(220, 59);
             this.teMailServer.Name = "teMailServer";
-            this.teMailServer.Size = new System.Drawing.Size(269, 20);
+            this.teMailServer.Size = new System.Drawing.Size(288, 20);
             this.teMailServer.TabIndex = 7;
             // 
             // teMailServerPort
@@ -339,7 +334,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.teMailServerPort.Location = new System.Drawing.Point(220, 88);
             this.teMailServerPort.Name = "teMailServerPort";
-            this.teMailServerPort.Size = new System.Drawing.Size(269, 20);
+            this.teMailServerPort.Size = new System.Drawing.Size(288, 20);
             this.teMailServerPort.TabIndex = 6;
             // 
             // teMailLogin
@@ -348,7 +343,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.teMailLogin.Location = new System.Drawing.Point(220, 117);
             this.teMailLogin.Name = "teMailLogin";
-            this.teMailLogin.Size = new System.Drawing.Size(269, 20);
+            this.teMailLogin.Size = new System.Drawing.Size(288, 20);
             this.teMailLogin.TabIndex = 5;
             // 
             // teEmail
@@ -357,7 +352,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.teEmail.Location = new System.Drawing.Point(220, 30);
             this.teEmail.Name = "teEmail";
-            this.teEmail.Size = new System.Drawing.Size(269, 20);
+            this.teEmail.Size = new System.Drawing.Size(288, 20);
             this.teEmail.TabIndex = 3;
             // 
             // labelControl3
@@ -370,7 +365,7 @@
             // 
             // labelControl2
             // 
-            this.labelControl2.Location = new System.Drawing.Point(20, 70);
+            this.labelControl2.Location = new System.Drawing.Point(12, 73);
             this.labelControl2.Name = "labelControl2";
             this.labelControl2.Size = new System.Drawing.Size(211, 13);
             this.labelControl2.TabIndex = 3;
@@ -380,17 +375,17 @@
             // 
             this.beImportDirPath.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.beImportDirPath.Location = new System.Drawing.Point(20, 92);
+            this.beImportDirPath.Location = new System.Drawing.Point(12, 92);
             this.beImportDirPath.Name = "beImportDirPath";
             this.beImportDirPath.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton()});
-            this.beImportDirPath.Size = new System.Drawing.Size(494, 20);
+            this.beImportDirPath.Size = new System.Drawing.Size(513, 20);
             this.beImportDirPath.TabIndex = 2;
             this.beImportDirPath.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.beImportDirPath_ButtonClick);
             // 
             // labelControl1
             // 
-            this.labelControl1.Location = new System.Drawing.Point(20, 11);
+            this.labelControl1.Location = new System.Drawing.Point(12, 11);
             this.labelControl1.Name = "labelControl1";
             this.labelControl1.Size = new System.Drawing.Size(204, 13);
             this.labelControl1.TabIndex = 1;
@@ -400,16 +395,17 @@
             // 
             this.beArmDbPath.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.beArmDbPath.Location = new System.Drawing.Point(20, 33);
+            this.beArmDbPath.Location = new System.Drawing.Point(12, 33);
             this.beArmDbPath.Name = "beArmDbPath";
             this.beArmDbPath.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton()});
-            this.beArmDbPath.Size = new System.Drawing.Size(494, 20);
+            this.beArmDbPath.Size = new System.Drawing.Size(513, 20);
             this.beArmDbPath.TabIndex = 0;
             this.beArmDbPath.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.beArmDbPath_ButtonClick);
             // 
             // tpImport
             // 
+            this.tpImport.Controls.Add(this.btnSaveImport);
             this.tpImport.Controls.Add(this.labelControl11);
             this.tpImport.Controls.Add(this.btnDelImportEmail);
             this.tpImport.Controls.Add(this.btnEditImportEmail);
@@ -425,6 +421,16 @@
             this.tpImport.Size = new System.Drawing.Size(532, 415);
             this.tpImport.Text = "Импорт данных";
             // 
+            // btnSaveImport
+            // 
+            this.btnSaveImport.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnSaveImport.Location = new System.Drawing.Point(414, 385);
+            this.btnSaveImport.Name = "btnSaveImport";
+            this.btnSaveImport.Size = new System.Drawing.Size(111, 23);
+            this.btnSaveImport.TabIndex = 25;
+            this.btnSaveImport.Text = "Сохранить";
+            this.btnSaveImport.Click += new System.EventHandler(this.btnSaveImport_Click);
+            // 
             // labelControl11
             // 
             this.labelControl11.Location = new System.Drawing.Point(12, 9);
@@ -435,33 +441,36 @@
             // 
             // btnDelImportEmail
             // 
-            this.btnDelImportEmail.Location = new System.Drawing.Point(443, 269);
+            this.btnDelImportEmail.Location = new System.Drawing.Point(450, 269);
             this.btnDelImportEmail.Name = "btnDelImportEmail";
             this.btnDelImportEmail.Size = new System.Drawing.Size(75, 23);
             this.btnDelImportEmail.TabIndex = 11;
             this.btnDelImportEmail.Text = "Удалить";
+            this.btnDelImportEmail.Click += new System.EventHandler(this.btnDelImportEmail_Click);
             // 
             // btnEditImportEmail
             // 
-            this.btnEditImportEmail.Location = new System.Drawing.Point(443, 240);
+            this.btnEditImportEmail.Location = new System.Drawing.Point(450, 240);
             this.btnEditImportEmail.Name = "btnEditImportEmail";
             this.btnEditImportEmail.Size = new System.Drawing.Size(75, 23);
             this.btnEditImportEmail.TabIndex = 10;
             this.btnEditImportEmail.Text = "Изменить";
+            this.btnEditImportEmail.Click += new System.EventHandler(this.btnEditImportEmail_Click);
             // 
             // btnAddImportEmail
             // 
-            this.btnAddImportEmail.Location = new System.Drawing.Point(443, 211);
+            this.btnAddImportEmail.Location = new System.Drawing.Point(450, 211);
             this.btnAddImportEmail.Name = "btnAddImportEmail";
             this.btnAddImportEmail.Size = new System.Drawing.Size(75, 23);
             this.btnAddImportEmail.TabIndex = 9;
             this.btnAddImportEmail.Text = "Добавить";
+            this.btnAddImportEmail.Click += new System.EventHandler(this.btnAddImportEmail_Click);
             // 
             // lbImportEmails
             // 
             this.lbImportEmails.Location = new System.Drawing.Point(12, 211);
             this.lbImportEmails.Name = "lbImportEmails";
-            this.lbImportEmails.Size = new System.Drawing.Size(424, 192);
+            this.lbImportEmails.Size = new System.Drawing.Size(432, 168);
             this.lbImportEmails.TabIndex = 8;
             // 
             // labelControl10
@@ -487,7 +496,7 @@
             this.teFileNameMask.EditValue = "*_imp.csv";
             this.teFileNameMask.Location = new System.Drawing.Point(188, 40);
             this.teFileNameMask.Name = "teFileNameMask";
-            this.teFileNameMask.Size = new System.Drawing.Size(330, 20);
+            this.teFileNameMask.Size = new System.Drawing.Size(337, 20);
             this.teFileNameMask.TabIndex = 5;
             // 
             // labelControl8
@@ -523,6 +532,7 @@
             // 
             // tpMail
             // 
+            this.tpMail.Controls.Add(this.btnSaveMail);
             this.tpMail.Controls.Add(this.labelControl12);
             this.tpMail.Controls.Add(this.btnDelMailEmail);
             this.tpMail.Controls.Add(this.btnEditMailEmail);
@@ -531,10 +541,20 @@
             this.tpMail.Controls.Add(this.labelControl13);
             this.tpMail.Controls.Add(this.labelControl14);
             this.tpMail.Controls.Add(this.teMailTime);
-            this.tpMail.Controls.Add(this.wdMMailWeekDays);
+            this.tpMail.Controls.Add(this.wdMailWeekDays);
             this.tpMail.Name = "tpMail";
             this.tpMail.Size = new System.Drawing.Size(532, 415);
             this.tpMail.Text = "Отправка уведомлений";
+            // 
+            // btnSaveMail
+            // 
+            this.btnSaveMail.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnSaveMail.Location = new System.Drawing.Point(414, 385);
+            this.btnSaveMail.Name = "btnSaveMail";
+            this.btnSaveMail.Size = new System.Drawing.Size(111, 23);
+            this.btnSaveMail.TabIndex = 24;
+            this.btnSaveMail.Text = "Сохранить";
+            this.btnSaveMail.Click += new System.EventHandler(this.btnSaveMail_Click);
             // 
             // labelControl12
             // 
@@ -546,33 +566,36 @@
             // 
             // btnDelMailEmail
             // 
-            this.btnDelMailEmail.Location = new System.Drawing.Point(444, 222);
+            this.btnDelMailEmail.Location = new System.Drawing.Point(450, 222);
             this.btnDelMailEmail.Name = "btnDelMailEmail";
             this.btnDelMailEmail.Size = new System.Drawing.Size(75, 23);
             this.btnDelMailEmail.TabIndex = 22;
             this.btnDelMailEmail.Text = "Удалить";
+            this.btnDelMailEmail.Click += new System.EventHandler(this.btnDelMailEmail_Click);
             // 
             // btnEditMailEmail
             // 
-            this.btnEditMailEmail.Location = new System.Drawing.Point(444, 193);
+            this.btnEditMailEmail.Location = new System.Drawing.Point(450, 193);
             this.btnEditMailEmail.Name = "btnEditMailEmail";
             this.btnEditMailEmail.Size = new System.Drawing.Size(75, 23);
             this.btnEditMailEmail.TabIndex = 21;
             this.btnEditMailEmail.Text = "Изменить";
+            this.btnEditMailEmail.Click += new System.EventHandler(this.btnEditMailEmail_Click);
             // 
             // btnAddMailEmail
             // 
-            this.btnAddMailEmail.Location = new System.Drawing.Point(444, 164);
+            this.btnAddMailEmail.Location = new System.Drawing.Point(450, 164);
             this.btnAddMailEmail.Name = "btnAddMailEmail";
             this.btnAddMailEmail.Size = new System.Drawing.Size(75, 23);
             this.btnAddMailEmail.TabIndex = 20;
             this.btnAddMailEmail.Text = "Добавить";
+            this.btnAddMailEmail.Click += new System.EventHandler(this.btnAddMailEmail_Click);
             // 
             // lbMailEmails
             // 
             this.lbMailEmails.Location = new System.Drawing.Point(13, 164);
             this.lbMailEmails.Name = "lbMailEmails";
-            this.lbMailEmails.Size = new System.Drawing.Size(424, 240);
+            this.lbMailEmails.Size = new System.Drawing.Size(431, 215);
             this.lbMailEmails.TabIndex = 19;
             // 
             // labelControl13
@@ -603,68 +626,20 @@
             this.teMailTime.Size = new System.Drawing.Size(100, 20);
             this.teMailTime.TabIndex = 14;
             // 
-            // wdMMailWeekDays
+            // wdMailWeekDays
             // 
-            this.wdMMailWeekDays.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.wdMailWeekDays.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.wdMMailWeekDays.Appearance.BackColor = System.Drawing.Color.Transparent;
-            this.wdMMailWeekDays.Appearance.Options.UseBackColor = true;
-            this.wdMMailWeekDays.Location = new System.Drawing.Point(14, 37);
-            this.wdMMailWeekDays.Name = "wdMMailWeekDays";
-            this.wdMMailWeekDays.Size = new System.Drawing.Size(502, 61);
-            this.wdMMailWeekDays.TabIndex = 13;
+            this.wdMailWeekDays.Appearance.BackColor = System.Drawing.Color.Transparent;
+            this.wdMailWeekDays.Appearance.Options.UseBackColor = true;
+            this.wdMailWeekDays.Location = new System.Drawing.Point(14, 37);
+            this.wdMailWeekDays.Name = "wdMailWeekDays";
+            this.wdMailWeekDays.Size = new System.Drawing.Size(502, 61);
+            this.wdMailWeekDays.TabIndex = 13;
             // 
             // ofdDbPath
             // 
             this.ofdDbPath.FileName = "openFileDialog1";
-            // 
-            // repositoryItemMemoEdit2
-            // 
-            this.repositoryItemMemoEdit2.Name = "repositoryItemMemoEdit2";
-            // 
-            // deFrom
-            // 
-            this.deFrom.EditValue = null;
-            this.deFrom.Location = new System.Drawing.Point(70, 11);
-            this.deFrom.Name = "deFrom";
-            this.deFrom.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
-            this.deFrom.Properties.CalendarTimeProperties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
-            this.deFrom.Properties.CalendarTimeProperties.CloseUpKey = new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.F4);
-            this.deFrom.Properties.CalendarTimeProperties.PopupBorderStyle = DevExpress.XtraEditors.Controls.PopupBorderStyles.Default;
-            this.deFrom.Size = new System.Drawing.Size(100, 20);
-            this.deFrom.TabIndex = 1;
-            // 
-            // labelControl15
-            // 
-            this.labelControl15.Location = new System.Drawing.Point(11, 14);
-            this.labelControl15.Name = "labelControl15";
-            this.labelControl15.Size = new System.Drawing.Size(53, 13);
-            this.labelControl15.TabIndex = 2;
-            this.labelControl15.Text = "События с";
-            // 
-            // labelControl16
-            // 
-            this.labelControl16.Location = new System.Drawing.Point(176, 14);
-            this.labelControl16.Name = "labelControl16";
-            this.labelControl16.Size = new System.Drawing.Size(12, 13);
-            this.labelControl16.TabIndex = 3;
-            this.labelControl16.Text = "по";
-            // 
-            // deTo
-            // 
-            this.deTo.EditValue = null;
-            this.deTo.Location = new System.Drawing.Point(194, 11);
-            this.deTo.Name = "deTo";
-            this.deTo.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
-            this.deTo.Properties.CalendarTimeProperties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
-            this.deTo.Properties.CalendarTimeProperties.CloseUpKey = new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.F4);
-            this.deTo.Properties.CalendarTimeProperties.PopupBorderStyle = DevExpress.XtraEditors.Controls.PopupBorderStyles.Default;
-            this.deTo.Size = new System.Drawing.Size(100, 20);
-            this.deTo.TabIndex = 4;
             // 
             // fmMain
             // 
@@ -681,10 +656,10 @@
             ((System.ComponentModel.ISupportInitialize)(this.tcMain)).EndInit();
             this.tcMain.ResumeLayout(false);
             this.tpEventLog.ResumeLayout(false);
-            this.tpEventLog.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gcEventsLog)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gvEventsLog)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemMemoEdit1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemMemoEdit2)).EndInit();
             this.tpSettings.ResumeLayout(false);
             this.tpSettings.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gcMailSettings)).EndInit();
@@ -706,12 +681,7 @@
             this.tpMail.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.lbMailEmails)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.teMailTime.Properties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.wdMMailWeekDays)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemMemoEdit2)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.deFrom.Properties.CalendarTimeProperties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.deFrom.Properties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.deTo.Properties.CalendarTimeProperties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.deTo.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.wdMailWeekDays)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -767,13 +737,11 @@
         private DevExpress.XtraEditors.LabelControl labelControl13;
         private DevExpress.XtraEditors.LabelControl labelControl14;
         private DevExpress.XtraEditors.TimeEdit teMailTime;
-        private DevExpress.XtraScheduler.UI.WeekDaysCheckEdit wdMMailWeekDays;
+        private DevExpress.XtraScheduler.UI.WeekDaysCheckEdit wdMailWeekDays;
         private DevExpress.XtraEditors.Repository.RepositoryItemMemoEdit repositoryItemMemoEdit1;
         private DevExpress.XtraEditors.Repository.RepositoryItemMemoEdit repositoryItemMemoEdit2;
-        private DevExpress.XtraEditors.DateEdit deTo;
-        private DevExpress.XtraEditors.LabelControl labelControl16;
-        private DevExpress.XtraEditors.LabelControl labelControl15;
-        private DevExpress.XtraEditors.DateEdit deFrom;
+        private DevExpress.XtraEditors.SimpleButton btnSaveImport;
+        private DevExpress.XtraEditors.SimpleButton btnSaveMail;
 
     }
 }

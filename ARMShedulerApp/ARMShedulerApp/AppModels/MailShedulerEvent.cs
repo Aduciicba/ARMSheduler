@@ -11,7 +11,7 @@ namespace ARMShedulerApp
 
         public MailShedulerEvent(Event _event)
         {
-            sourceEvent = _event;
+            _sourceEvent = _event;
             splitWeekDays();
             calcNextStartTime(DateTime.Now.Date);
         }

@@ -23,19 +23,19 @@ namespace ARMShedulerApp
 		{
 			InitializeContext();
 
-            if (!OpenDbConnection())
+            if (!openDbConnection())
             {
                 ExitThread();
             }
 
             notifyIcon.ContextMenuStrip.Items.Clear();
-            notifyIcon.ContextMenuStrip.Items.Add(ToolStripMenuItemWithHandler("&Открыть..", showMainItem_Click));
-            notifyIcon.ContextMenuStrip.Items.Add(ToolStripMenuItemWithHandler("&Настройки..", showSettingsItem_Click));
-            notifyIcon.ContextMenuStrip.Items.Add(ToolStripMenuItemWithHandler("&Выход", exitItem_Click));
+            notifyIcon.ContextMenuStrip.Items.Add(toolStripMenuItemWithHandler("&Открыть..", showMainItem_Click));
+            notifyIcon.ContextMenuStrip.Items.Add(toolStripMenuItemWithHandler("&Настройки..", showSettingsItem_Click));
+            notifyIcon.ContextMenuStrip.Items.Add(toolStripMenuItemWithHandler("&Выход", exitItem_Click));
             ShowMainForm(); 
 		}
 
-        bool OpenDbConnection()
+        bool openDbConnection()
         {
             if (Properties.Settings.Default.DBPath == "")
             {
@@ -69,14 +69,14 @@ namespace ARMShedulerApp
             }
         }
 
-        private void ContextMenuStrip_Opening(object sender, System.ComponentModel.CancelEventArgs e)
+        private void contextMenuStripOpening(object sender, System.ComponentModel.CancelEventArgs e)
         {
             e.Cancel = false;
         }
 
        # region support methods
 
-        public ToolStripMenuItem ToolStripMenuItemWithHandler(string displayText, EventHandler eventHandler)
+        public ToolStripMenuItem toolStripMenuItemWithHandler(string displayText, EventHandler eventHandler)
         {
             var item = new ToolStripMenuItem(displayText);
             if (eventHandler != null) { item.Click += eventHandler; }
@@ -152,7 +152,7 @@ namespace ARMShedulerApp
                                  Text = DefaultTooltip,
                                  Visible = true
                              };
-            notifyIcon.ContextMenuStrip.Opening += ContextMenuStrip_Opening;
+            notifyIcon.ContextMenuStrip.Opening += contextMenuStripOpening;
             notifyIcon.DoubleClick += notifyIcon_DoubleClick;
             notifyIcon.MouseUp += notifyIcon_MouseUp;
         }

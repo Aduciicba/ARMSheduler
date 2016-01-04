@@ -21,6 +21,9 @@ namespace ARMShedulerApp
         bool _needRefreshEvents = false;
         refreshUI _refresh;
 
+        MailShedulerEvent _baseMailEvent;
+        ImportShedulerEvent _baseImportEvent;
+
         public bool needRefreshEvents
         {
             get
@@ -33,6 +36,30 @@ namespace ARMShedulerApp
             }
         }
 
+        public MailShedulerEvent baseMailEvent
+        {
+            get
+            {
+                return _baseMailEvent;
+            }
+            set
+            {
+                _baseMailEvent = value;
+            }
+        }
+
+        public ImportShedulerEvent baseImportEvent
+        {
+            get
+            {
+                return _baseImportEvent;
+            }
+            set
+            {
+                _baseImportEvent = value;
+            }
+        }
+
         public ShedulerEventManager(refreshUI _rui)
         {
             _refresh = _rui;
@@ -42,11 +69,13 @@ namespace ARMShedulerApp
         void loadEvents()
         {
             _eventList.Clear();
-            var events = CustomApplicationContext.db.Events.All(/*CustomApplicationContext.db.Events.Is_active = 1*/);
+            var events = CustomApplicationContext.db.Events.All();
+            List<EventEmail> emailList = CustomApplicationContext.db.EventEmails.All().ToList<EventEmail>();
             foreach (var ev in events)
             {
                 ShedulerEvent shEvent;
                 Event evnt = ev;
+                evnt.emailList = emailList.Where(x => x.fid_event == evnt.id_event).ToList();
                 if (evnt.fid_event_type == 1)
                 {
                     shEvent = new ImportShedulerEvent(evnt);
@@ -55,9 +84,17 @@ namespace ARMShedulerApp
                 {
                     shEvent = new MailShedulerEvent(evnt);
                 }
+                
                 _eventList.Add(shEvent);
             }
-            
+            _baseMailEvent = (_eventList.First(e => e.sourceEvent.fid_event_type == 2) as MailShedulerEvent);
+            _baseImportEvent = (_eventList.First(e => e.sourceEvent.fid_event_type == 1) as ImportShedulerEvent);
+        }
+
+        public void refreshEmails(int id_event)
+        {
+            List<EventEmail> emailList = CustomApplicationContext.db.EventEmails.FindAll(CustomApplicationContext.db.EventEmails.Fid_event == id_event).ToList<EventEmail>();
+            _eventList.First(x => x.sourceEvent.id_event == id_event).sourceEvent.emailList = emailList;
         }
 
         public void startScheduler()

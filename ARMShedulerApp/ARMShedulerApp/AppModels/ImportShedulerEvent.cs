@@ -10,7 +10,7 @@ namespace ARMShedulerApp
     {
         public ImportShedulerEvent(Event _event)
         {
-            sourceEvent = _event;
+            _sourceEvent = _event;
             splitWeekDays();
             calcNextStartTime(DateTime.Now.Date);
         }

@@ -133,10 +133,16 @@
     <Compile Include="DataModels\EventEmail.cs" />
     <Compile Include="DataModels\EventLog.cs" />
     <Compile Include="DataModels\EventType.cs" />
-    <Compile Include="DomainModels\EventEmail.cs" />
+    <Compile Include="DomainModels\Event.cs" />
     <Compile Include="DomainModels\EventLog.cs" />
     <Compile Include="AppModels\ShedulerEventManager.cs" />
     <Compile Include="AppModels\ShedulerEvent.cs" />
+    <Compile Include="fmEmailEdit.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="fmEmailEdit.Designer.cs">
+      <DependentUpon>fmEmailEdit.cs</DependentUpon>
+    </Compile>
     <Compile Include="fmMain.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -146,6 +152,9 @@
     <Compile Include="AppModels\MailSender.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="fmEmailEdit.resx">
+      <DependentUpon>fmEmailEdit.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="fmMain.resx">
       <DependentUpon>fmMain.cs</DependentUpon>
     </EmbeddedResource>
