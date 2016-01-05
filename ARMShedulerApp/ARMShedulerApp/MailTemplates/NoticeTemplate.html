@@ -1,0 +1,85 @@
+﻿<!DOCTYPE html>
+<html xmlns="">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width"/>
+
+    <!-- For development, pass document through inliner -->
+    <link rel="stylesheet" href="css/simple.css">
+
+    <style type="text/css">
+
+        .footer {
+            font-size: 10pt; 
+            font-style: italic; 
+        }
+
+    </style>
+</head>
+<body>
+<table class="body-wrap">
+    <tr>
+        <td class="container">
+
+            <!-- Message start -->
+            <table>
+                <tr>
+                    <td align="center" class="masthead">
+
+                    </td>
+                </tr>
+                <tr>
+                    <td >
+
+                        <h3>По состоянию на %rep_date% зарегистрированы следующие события:</h3>
+
+                        <p>
+						    <h4>Медосмотры:</h4>
+						    <ul>%mo%</ul>
+						</p>
+                        <p>
+                            <h4>Проверка знаний:</h4>
+                            <ul>%pz%</ul>
+                        </p>
+                        <p>
+                            <h4>Инструктажи ОТ:</h4>
+                            <ul>%iot%</ul>
+                        </p>
+                        <p>
+                            <h4>СИЗ:</h4>
+                            <ul>%siz%</ul>
+                        </p>
+                        <p>
+                            <h4>Компенсации:</h4>
+                            <ul>%compens%</ul>
+                        </p>
+                        <p>
+                            <h4>Работники:</h4>
+                            <ul>%worker%</ul>
+                        </p>
+                        <p></p>
+
+                    </td>
+                </tr>
+            </table>
+
+        </td>
+    </tr>
+    <tr>
+        <td class="container">
+
+            <!-- Message start -->
+            <table>
+                <tr>
+                    <td class="content footer" align="center">
+                        <p class="footer">Отправлено системой автоматических уведомлений АРМ ОТ</p>
+                        <!--p><a href="mailto:">hello@company.com</a> | <a href="#">Unsubscribe</a></p-->
+                    </td>
+                </tr>
+            </table>
+
+        </td>
+    </tr>
+</table>
+</body>
+</html>
