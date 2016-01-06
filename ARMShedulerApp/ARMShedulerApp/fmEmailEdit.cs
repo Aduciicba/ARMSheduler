@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace ARMShedulerApp
+namespace ARMSchedulerApp
 {
     public partial class fmEmailEdit : Form
     {

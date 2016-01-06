@@ -5,8 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Net.Mail;
 using System.Net;
+using System.IO;
 
-namespace ARMShedulerApp
+namespace ARMSchedulerApp
 {
     public class MailSender
     {
@@ -77,6 +78,7 @@ namespace ARMShedulerApp
                 message.To.Add(new MailAddress(emailTo));
                 message.Subject = subject;
                 message.Body = content;
+                message.IsBodyHtml = true;
                 smtp.Send(message);
                 return true;
             }
@@ -84,6 +86,13 @@ namespace ARMShedulerApp
             {
                 return false;
             }
+        }
+
+        public string getTemplate(string templateName)
+        {
+            StreamReader reader = new StreamReader(templateName);
+            string readFile = reader.ReadToEnd();
+            return readFile;
         }
     }
 }

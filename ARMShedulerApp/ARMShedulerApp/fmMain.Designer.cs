@@ -1,4 +1,4 @@
-﻿namespace ARMShedulerApp
+﻿namespace ARMSchedulerApp
 {
     partial class fmMain
     {
@@ -184,7 +184,7 @@
             // gridColumn2
             // 
             this.gridColumn2.Caption = "Время события";
-            this.gridColumn2.DisplayFormat.FormatString = "dd.MM.yyyy hh:mm:ss";
+            this.gridColumn2.DisplayFormat.FormatString = "dd.MM.yyyy HH:mm:ss";
             this.gridColumn2.DisplayFormat.FormatType = DevExpress.Utils.FormatType.DateTime;
             this.gridColumn2.FieldName = "event_time";
             this.gridColumn2.Name = "gridColumn2";
@@ -651,7 +651,7 @@
             this.MinimumSize = new System.Drawing.Size(682, 430);
             this.Name = "fmMain";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "ARM Sheduler";
+            this.Text = "ARM Scheduler";
             this.Load += new System.EventHandler(this.fmMain_Load);
             ((System.ComponentModel.ISupportInitialize)(this.tcMain)).EndInit();
             this.tcMain.ResumeLayout(false);

@@ -5,9 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.ComponentModel;
 
-namespace ARMShedulerApp
+namespace ARMSchedulerApp
 {
-    abstract class ShedulerEvent : INotifyPropertyChanged
+    public abstract class SchedulerEvent : INotifyPropertyChanged
     {
         protected bool _hasUnsavedChanges;
         protected DateTime _nextStartTime;
@@ -46,7 +46,9 @@ namespace ARMShedulerApp
             }
             set
             {
-                sourceEvent.start_week_days = Convert.ToString(value, 2);
+                string weekdays = Convert.ToString(value, 2);
+                weekdays = "0000000".Substring(1, 7 - weekdays.Length) + weekdays;
+                sourceEvent.start_week_days = weekdays;
                 splitWeekDays();
                 calcNextStartTime(DateTime.Now.Date);
                 _hasUnsavedChanges = true;
@@ -61,7 +63,9 @@ namespace ARMShedulerApp
             }
             set
             {
-                sourceEvent.start_week_days = Convert.ToString((int)value, 2);
+                string weekdays = Convert.ToString((int)value, 2);
+                weekdays = "0000000".Substring(1, 7 - weekdays.Length) + weekdays;
+                sourceEvent.start_week_days = weekdays;
                 splitWeekDays();
                 calcNextStartTime(DateTime.Now.Date);
                 _hasUnsavedChanges = true;
@@ -98,6 +102,12 @@ namespace ARMShedulerApp
 
         public void calcNextStartTime(DateTime startCalcDate)
         {
+            if (_eventWeekDays.Count(x => x == 1) == 0)
+            {
+                _nextStartTime = DateTime.Now.AddDays(1000);
+                return;
+            }
+
             DateTime nextDate = startCalcDate;
 
             int weekDay = (int)nextDate.DayOfWeek;

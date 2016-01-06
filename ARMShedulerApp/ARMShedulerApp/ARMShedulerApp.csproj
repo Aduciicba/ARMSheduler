@@ -145,6 +145,7 @@
   <ItemGroup>
     <Compile Include="AppModels\ARMQueries.cs" />
     <Compile Include="AppModels\ImportShedulerEvent.cs" />
+    <Compile Include="AppModels\ImportWorker.cs" />
     <Compile Include="AppModels\MailShedulerEvent.cs" />
     <Compile Include="CustomApplicationContext.cs" />
     <Compile Include="DataModels\DbVersion.cs" />
@@ -171,6 +172,7 @@
     <Compile Include="AppModels\MailSender.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Settings.cs" />
     <Compile Include="SQLiteHelper\SQLiteColumn.cs" />
     <Compile Include="SQLiteHelper\SQLiteColumnList.cs" />
     <Compile Include="SQLiteHelper\SQLiteHelper.cs" />
@@ -197,8 +199,8 @@
     </None>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+      <Generator>PublicSettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings1.Designer.cs</LastGenOutput>
     </None>
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -229,6 +231,9 @@
   <ItemGroup>
     <Content Include="Images\stack.ico">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="MailTemplates\ImportTemplate.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="MailTemplates\NoticeTemplate.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

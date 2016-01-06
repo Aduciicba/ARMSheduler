@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Threading;
 
-namespace ARMShedulerApp
+namespace ARMSchedulerApp
 {
     public delegate void startEventWork(finishEventWork fe);
     public delegate void finishEventWork(
@@ -13,16 +13,16 @@ namespace ARMShedulerApp
                                         , string errMessage
                                         , Event  ev
                                         );
-    class ShedulerEventManager
+    public class SchedulerEventManager
     {
 
-        List<ShedulerEvent> _eventList = new List<ShedulerEvent>();
+        List<SchedulerEvent> _eventList = new List<SchedulerEvent>();
         Thread _checkThread;
         bool _needRefreshEvents = false;
         refreshUI _refresh;
 
-        MailShedulerEvent _baseMailEvent;
-        ImportShedulerEvent _baseImportEvent;
+        MailSchedulerEvent _baseMailEvent;
+        ImportSchedulerEvent _baseImportEvent;
 
         public bool needRefreshEvents
         {
@@ -36,7 +36,7 @@ namespace ARMShedulerApp
             }
         }
 
-        public MailShedulerEvent baseMailEvent
+        public MailSchedulerEvent baseMailEvent
         {
             get
             {
@@ -48,7 +48,7 @@ namespace ARMShedulerApp
             }
         }
 
-        public ImportShedulerEvent baseImportEvent
+        public ImportSchedulerEvent baseImportEvent
         {
             get
             {
@@ -60,7 +60,7 @@ namespace ARMShedulerApp
             }
         }
 
-        public ShedulerEventManager(refreshUI _rui)
+        public SchedulerEventManager(refreshUI _rui)
         {
             _refresh = _rui;
             loadEvents();
@@ -73,22 +73,22 @@ namespace ARMShedulerApp
             List<EventEmail> emailList = CustomApplicationContext.db.EventEmails.All().ToList<EventEmail>();
             foreach (var ev in events)
             {
-                ShedulerEvent shEvent;
+                SchedulerEvent shEvent;
                 Event evnt = ev;
                 evnt.emailList = emailList.Where(x => x.fid_event == evnt.id_event).ToList();
                 if (evnt.fid_event_type == 1)
                 {
-                    shEvent = new ImportShedulerEvent(evnt);
+                    shEvent = new ImportSchedulerEvent(evnt);
                 }
                 else
                 {
-                    shEvent = new MailShedulerEvent(evnt);
+                    shEvent = new MailSchedulerEvent(evnt);
                 }
                 
                 _eventList.Add(shEvent);
             }
-            _baseMailEvent = (_eventList.First(e => e.sourceEvent.fid_event_type == 2) as MailShedulerEvent);
-            _baseImportEvent = (_eventList.First(e => e.sourceEvent.fid_event_type == 1) as ImportShedulerEvent);
+            _baseMailEvent = (_eventList.First(e => e.sourceEvent.fid_event_type == 2) as MailSchedulerEvent);
+            _baseImportEvent = (_eventList.First(e => e.sourceEvent.fid_event_type == 1) as ImportSchedulerEvent);
         }
 
         public void refreshEmails(int id_event)
@@ -116,7 +116,7 @@ namespace ARMShedulerApp
             }
             while (true)
             {
-                foreach(ShedulerEvent she in _eventList)
+                foreach(SchedulerEvent she in _eventList)
                 {
                     if (she.nextStartTime <= DateTime.Now)
                     {

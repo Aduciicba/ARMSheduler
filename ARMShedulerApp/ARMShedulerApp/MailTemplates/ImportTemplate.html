@@ -1,0 +1,70 @@
+﻿<!DOCTYPE html>
+<html xmlns="">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width"/>
+
+    <!-- For development, pass document through inliner -->
+    <link rel="stylesheet" href="css/simple.css">
+
+    <style type="text/css">
+
+        .footer {
+            font-size: 10pt; 
+            font-style: italic; 
+        }
+
+    </style>
+</head>
+<body>
+<table class="body-wrap">
+    <tr>
+        <td class="container">
+
+            <!-- Message start -->
+            <table>
+                <tr>
+                    <td align="center" class="masthead">
+
+                    </td>
+                </tr>
+                <tr>
+                    <td >
+
+                        <h3>Результаты импорта %rep_date%:</h3>
+
+                        <p>
+						    <h4>Найденные файлы:</h4>
+						    %files%
+						</p>
+                        <p>
+                            <h4>Невалидные работники:</h4>
+                        </p>
+                        <p>
+                            %workers%
+                        </p>
+
+                    </td>
+                </tr>
+            </table>
+
+        </td>
+    </tr>
+    <tr>
+        <td class="container">
+
+            <!-- Message start -->
+            <table>
+                <tr>
+                    <td class="content footer" align="center">
+                        <p class="footer">Отправлено системой автоматических уведомлений АРМ ОТ</p>
+                        <!--p><a href="mailto:">hello@company.com</a> | <a href="#">Unsubscribe</a></p-->
+                    </td>
+                </tr>
+            </table>
+
+        </td>
+    </tr>
+</table>
+</body>
+</html>

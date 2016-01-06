@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace ARMShedulerApp.Properties {
+namespace ARMSchedulerApp.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
@@ -122,12 +122,13 @@ namespace ARMShedulerApp.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string Setting {
+        public string ImportFileMask
+        {
             get {
-                return ((string)(this["Setting"]));
+                return ((string)(this["ImportFileMask"]));
             }
             set {
-                this["Setting"] = value;
+                this["ImportFileMask"] = value;
             }
         }
     }

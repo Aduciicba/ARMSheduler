@@ -9,19 +9,17 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Net.Mail;
 using System.Net;
-using System.ComponentModel;
 using Simple.Data;
 using Simple.OData;
 using Simple.OData.Client;
 
-namespace ARMShedulerApp
+namespace ARMSchedulerApp
 {
-    public delegate void refreshUI();
+    
     public partial class fmMain : Form
     {
         string _firstShownTabName = "tpMain";
-        ShedulerEventManager _sem;
-        refreshUI _refreshUI;
+        
 
         public fmMain(string TabName)
         {
@@ -32,24 +30,18 @@ namespace ARMShedulerApp
         private void fmMain_Load(object sender, EventArgs e)
         {
             Icon = new Icon("Images/stack.ico");
-            _refreshUI = refresh;
-            startScheduler();
             loadControls();
-        }
-
-        void startScheduler()
-        {
-            _sem = new ShedulerEventManager(_refreshUI);
-            _sem.startScheduler();
         }
 
         void loadControls()
         {
+            SchedulerEventManager sem = CustomApplicationContext.schedulerManager;
             refreshLog();
-            wdImportWeekDays.DataBindings.Add("WeekDays", _sem.baseImportEvent, "eventWeekDaysXtra", false, DataSourceUpdateMode.OnPropertyChanged);
-            teImportTime.DataBindings.Add("EditValue", _sem.baseImportEvent, "eventTime", false, DataSourceUpdateMode.OnPropertyChanged);
-            wdMailWeekDays.DataBindings.Add("WeekDays", _sem.baseMailEvent, "eventWeekDaysXtra", false, DataSourceUpdateMode.OnPropertyChanged);
-            teMailTime.DataBindings.Add("EditValue", _sem.baseMailEvent, "eventTime", false, DataSourceUpdateMode.OnPropertyChanged);
+            wdImportWeekDays.DataBindings.Add("WeekDays", sem.baseImportEvent, "eventWeekDaysXtra", false, DataSourceUpdateMode.OnPropertyChanged);
+            teImportTime.DataBindings.Add("EditValue", sem.baseImportEvent, "eventTime", false, DataSourceUpdateMode.OnPropertyChanged);
+            wdMailWeekDays.DataBindings.Add("WeekDays", sem.baseMailEvent, "eventWeekDaysXtra", false, DataSourceUpdateMode.OnPropertyChanged);
+            teMailTime.DataBindings.Add("EditValue", sem.baseMailEvent, "eventTime", false, DataSourceUpdateMode.OnPropertyChanged);
+            teFileNameMask.DataBindings.Add("Text", Properties.Settings.Default, "ImportFileMask", false, DataSourceUpdateMode.OnPropertyChanged);
             refreshImportPage();
             refreshMailPage();
             selectTabPage(_firstShownTabName);
@@ -59,18 +51,25 @@ namespace ARMShedulerApp
 
         void refreshImportPage()
         {
-            lbImportEmails.DataSource = _sem.baseImportEvent.emailList;
+            lbImportEmails.DataSource = CustomApplicationContext.schedulerManager.baseImportEvent.emailList;
             lbImportEmails.DisplayMember = "email";
         }
         void refreshMailPage()
         {
-            lbMailEmails.DataSource = _sem.baseMailEvent.emailList;
+            lbMailEmails.DataSource = CustomApplicationContext.schedulerManager.baseMailEvent.emailList;
             lbMailEmails.DisplayMember = "email";
         }
 
         public void selectTabPage(string TabName)
         {
-            tcMain.SelectedTabPage = tcMain.TabPages.Single(t => t.Name == TabName);
+            try
+            {
+                tcMain.SelectedTabPage = tcMain.TabPages.Single(t => t.Name == TabName);
+            }
+            catch
+            {
+
+            }
         }        
 
         void refreshLog()
@@ -95,13 +94,8 @@ namespace ARMShedulerApp
             gcEventsLog.DataSource = (loglist.ToList<EventLog>() as List<EventLog>).OrderByDescending(x => x.event_time);
         }
 
-        void refresh()
+        public void refresh()
         {
-            if (this.InvokeRequired)
-            {
-                this.Invoke(_refreshUI);
-                return;
-            }
             refreshLog();
         }
 
@@ -116,9 +110,9 @@ namespace ARMShedulerApp
         private void tcMain_SelectedPageChanging(object sender, DevExpress.XtraTab.TabPageChangingEventArgs e)
         {
             if (
-                (e.PrevPage.Name == "tpImport" && _sem.baseImportEvent.hasUnsavedChanges)
+                (e.PrevPage.Name == "tpImport" && CustomApplicationContext.schedulerManager.baseImportEvent.hasUnsavedChanges)
                 ||
-                (e.PrevPage.Name == "tpMail" && _sem.baseMailEvent.hasUnsavedChanges)
+                (e.PrevPage.Name == "tpMail" && CustomApplicationContext.schedulerManager.baseMailEvent.hasUnsavedChanges)
                )
             {
                 var res = MessageBox.Show("На вкладке есть не сохраненные изменения. Сохранить изменения?", "Подтвержление", MessageBoxButtons.YesNoCancel);
@@ -127,9 +121,9 @@ namespace ARMShedulerApp
                 if (res == System.Windows.Forms.DialogResult.Yes)
                 {
                     if (e.PrevPage.Name == "tpImport")
-                        _sem.baseImportEvent.Save();
+                        CustomApplicationContext.schedulerManager.baseImportEvent.Save();
                     if (e.PrevPage.Name == "tpMail")
-                        _sem.baseMailEvent.Save();
+                        CustomApplicationContext.schedulerManager.baseMailEvent.Save();
                 }
             }
 
@@ -244,12 +238,13 @@ namespace ARMShedulerApp
 
         private void btnSaveMail_Click(object sender, EventArgs e)
         {
-            _sem.baseMailEvent.Save();
+            CustomApplicationContext.schedulerManager.baseMailEvent.Save();
         }
 
         private void btnSaveImport_Click(object sender, EventArgs e)
         {
-            _sem.baseImportEvent.Save();
+            CustomApplicationContext.schedulerManager.baseImportEvent.Save();
+            Properties.Settings.Default.Save();
         }
 
         #region Редактирование Email
@@ -258,7 +253,7 @@ namespace ARMShedulerApp
         {
             EventEmail em = new EventEmail()
             {
-                fid_event = _sem.baseImportEvent.sourceEvent.id_event
+                fid_event = CustomApplicationContext.schedulerManager.baseImportEvent.sourceEvent.id_event
             };
             editEmail(em);
         }
@@ -267,7 +262,7 @@ namespace ARMShedulerApp
         {
             EventEmail em = new EventEmail()
             {
-                fid_event = _sem.baseMailEvent.sourceEvent.id_event
+                fid_event = CustomApplicationContext.schedulerManager.baseMailEvent.sourceEvent.id_event
             };
             editEmail(em);
         }
@@ -288,7 +283,7 @@ namespace ARMShedulerApp
         {
             EventEmail em = lbMailEmails.SelectedItem as EventEmail;
             deleteEmail(em);
-            _sem.refreshEmails(em.fid_event);
+            CustomApplicationContext.schedulerManager.refreshEmails(em.fid_event);
             refreshMailPage();
         }
 
@@ -296,7 +291,7 @@ namespace ARMShedulerApp
         {
             EventEmail em = lbImportEmails.SelectedItem as EventEmail;
             deleteEmail(em);
-            _sem.refreshEmails(em.fid_event);
+            CustomApplicationContext.schedulerManager.refreshEmails(em.fid_event);
             refreshImportPage();
         }
 
@@ -326,7 +321,7 @@ namespace ARMShedulerApp
                 {
                     CustomApplicationContext.db.EventEmails.Update(fm.EditingEmail);
                 }
-                _sem.refreshEmails(fm.EditingEmail.fid_event);
+                CustomApplicationContext.schedulerManager.refreshEmails(fm.EditingEmail.fid_event);
                 refreshImportPage();
                 refreshMailPage();
             }
@@ -352,6 +347,8 @@ namespace ARMShedulerApp
         }
 
         #endregion
+
+
     }
 
 }

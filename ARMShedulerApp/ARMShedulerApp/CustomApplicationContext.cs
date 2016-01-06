@@ -9,15 +9,26 @@ using Simple.Data;
 using Simple.OData;
 using Simple.OData.Client;
 
-namespace ARMShedulerApp
+namespace ARMSchedulerApp
 {
-
+    public delegate void refreshUI();
     public class CustomApplicationContext : ApplicationContext
     {
         private static readonly string IconFileName = "Images/stack.ico";
         private static readonly string DefaultTooltip = "Настройка импорта и отправки уведомлений для Кодекс АРМ";
 
         public static dynamic db;
+        refreshUI _refreshUI;
+
+        static SchedulerEventManager _sem;
+
+        public static SchedulerEventManager schedulerManager
+        {
+            get
+            {
+                return _sem;
+            }
+        }
 
 		public CustomApplicationContext() 
 		{
@@ -32,8 +43,16 @@ namespace ARMShedulerApp
             notifyIcon.ContextMenuStrip.Items.Add(toolStripMenuItemWithHandler("&Открыть..", showMainItem_Click));
             notifyIcon.ContextMenuStrip.Items.Add(toolStripMenuItemWithHandler("&Настройки..", showSettingsItem_Click));
             notifyIcon.ContextMenuStrip.Items.Add(toolStripMenuItemWithHandler("&Выход", exitItem_Click));
+            startScheduler();
             ShowMainForm(); 
 		}
+
+        void startScheduler()
+        {
+            _refreshUI = refreshMainForm;
+            _sem = new SchedulerEventManager(_refreshUI);
+            _sem.startScheduler();
+        }
 
         bool openDbConnection()
         {
@@ -67,14 +86,9 @@ namespace ARMShedulerApp
                                , MessageBoxIcon.Error);
                 return false;
             }
-        }
+        }        
 
-        private void contextMenuStripOpening(object sender, System.ComponentModel.CancelEventArgs e)
-        {
-            e.Cancel = false;
-        }
-
-       # region support methods
+        # region support methods
 
         public ToolStripMenuItem toolStripMenuItemWithHandler(string displayText, EventHandler eventHandler)
         {
@@ -85,8 +99,7 @@ namespace ARMShedulerApp
 
         # endregion support methods
 
-
-        # region the forms
+        # region forms
 
         private Form mainForm;
 
@@ -95,7 +108,7 @@ namespace ARMShedulerApp
             if (mainForm == null)
             {
                 mainForm = new fmMain(TabName);
-                mainForm.Closed += mainForm_Closed; 
+                mainForm.Closed += mainForm_Closed;
                 mainForm.Show();                
             }
             else 
@@ -103,6 +116,18 @@ namespace ARMShedulerApp
                 mainForm.Activate();
             }
             
+        }
+
+        void refreshMainForm()
+        {
+            if (mainForm == null)
+                return;
+            if (mainForm.InvokeRequired)
+            {
+                mainForm.Invoke(_refreshUI);
+                return;
+            }
+            (mainForm as fmMain).refresh();
         }
 
         private void notifyIcon_DoubleClick(object sender, EventArgs e) 
@@ -119,7 +144,6 @@ namespace ARMShedulerApp
             }
         }
 
-
         private void showMainItem_Click(object sender, EventArgs e) 
         { 
             ShowMainForm(); 
@@ -133,6 +157,11 @@ namespace ARMShedulerApp
         private void mainForm_Closed(object sender, EventArgs e)        
         {
             mainForm = null;
+        }
+
+        private void contextMenuStripOpening(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            e.Cancel = false;
         }
 
         # endregion the forms
@@ -169,7 +198,9 @@ namespace ARMShedulerApp
                                , "Подтверждение"
                                , MessageBoxButtons.YesNo) == DialogResult.Yes)
             {
+                schedulerManager.stopScheduler();                
                 ExitThread();
+
             }
 		}
 

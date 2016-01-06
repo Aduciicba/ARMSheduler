@@ -26,8 +26,8 @@
     <Setting Name="EmailPassword" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="Setting" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
+    <Setting Name="ImportFileMask" Type="System.String" Scope="User">
+      <Value Profile="(Default)">*_imp.csv</Value>
     </Setting>
   </Settings>
 </SettingsFile>

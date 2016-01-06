@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using MutexManager;
 
-namespace ARMShedulerApp
+namespace ARMSchedulerApp
 {
     static class Program
     {
@@ -34,6 +34,12 @@ namespace ARMShedulerApp
             //        MessageBoxButtons.OK, MessageBoxIcon.Error);
             //}
             SingleInstance.Stop();
+            Application.ApplicationExit += Application_ApplicationExit;
+        }
+
+        static void Application_ApplicationExit(object sender, EventArgs e)
+        {
+            
         }
         
     }

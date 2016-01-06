@@ -1,4 +1,4 @@
-﻿namespace ARMShedulerApp
+﻿namespace ARMSchedulerApp
 {
     partial class fmEmailEdit
     {
