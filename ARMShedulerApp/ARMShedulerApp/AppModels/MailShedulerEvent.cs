@@ -7,18 +7,25 @@ using System.Data.SQLite;
 using System.Data;
 using System.IO;
 using System.Windows.Forms;
+using NLog;
 
 namespace ARMSchedulerApp
 {
     public class MailSchedulerEvent : SchedulerEvent
-    {     
+    {
         string mailTemplateName = @"\MailTemplates\NoticeTemplate.html";
+        Logger logger = LogManager.GetCurrentClassLogger();
 
         public MailSchedulerEvent(Event _event)
         {
             _sourceEvent = _event;
             splitWeekDays();
-            calcNextStartTime(DateTime.Now.Date);
+            DateTime dt;
+            if ((DateTime.Now.Date + _sourceEvent.start_time.TimeOfDay) > DateTime.Now)
+                dt = DateTime.Now.Date;
+            else
+                dt = DateTime.Now.Date.AddDays(1);
+            calcNextStartTime(dt);
         }
 
         public override void startEvent(finishEventWork fe)
@@ -54,6 +61,7 @@ namespace ARMSchedulerApp
             }
             catch (Exception ex)
             {
+                logger.Error(String.Format("ошибка при отправке почты: {0}", ex.Message));
                 result = "Ошибка";
                 err = ex.Message;
             }

@@ -8,6 +8,7 @@ using System.Data;
 using System.IO;
 using System.Diagnostics;
 using System.Windows.Forms;
+using NLog;
 
 namespace ARMSchedulerApp
 {
@@ -17,6 +18,8 @@ namespace ARMSchedulerApp
 
         List<string> _filesList;
         SQLiteHelper _sh;
+        Logger logger = LogManager.GetCurrentClassLogger();
+
         List<ImportWorker> _badWorkersList;
 
         Dictionary<string, int> _fileInfo;
@@ -79,8 +82,13 @@ namespace ARMSchedulerApp
         public ImportSchedulerEvent(Event _event)
         {
             _sourceEvent = _event;
-            splitWeekDays();
-            calcNextStartTime(DateTime.Now.Date);
+            splitWeekDays(); 
+            DateTime dt;
+            if ((DateTime.Now.Date + _sourceEvent.start_time.TimeOfDay) > DateTime.Now)
+                dt = DateTime.Now.Date;
+            else
+                dt = DateTime.Now.Date.AddDays(1);
+            calcNextStartTime(dt);
         }
         public override void startEvent(finishEventWork fe)
         {
@@ -112,6 +120,7 @@ namespace ARMSchedulerApp
             }
             catch (Exception ex)
             {
+                logger.Error(String.Format("ошибка при импорте: {0}", ex.Message));
                 result = "Ошибка";
                 err = ex.Message;
             }
@@ -374,9 +383,9 @@ namespace ARMSchedulerApp
             {
                 File.Delete(fileName);
             }
-            catch
+            catch (Exception ex)
             {
-
+                logger.Error(String.Format("ошибка при удалении файла {0}: {1}", fileName, ex.Message));
             }
 
         }

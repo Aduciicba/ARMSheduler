@@ -50,7 +50,12 @@ namespace ARMSchedulerApp
                 weekdays = "0000000".Substring(1, 7 - weekdays.Length) + weekdays;
                 sourceEvent.start_week_days = weekdays;
                 splitWeekDays();
-                calcNextStartTime(DateTime.Now.Date);
+                DateTime dt;
+                if ((DateTime.Now.Date + _sourceEvent.start_time.TimeOfDay) > DateTime.Now)
+                    dt = DateTime.Now.Date;
+                else
+                    dt = DateTime.Now.Date.AddDays(1);
+                calcNextStartTime(dt);
                 _hasUnsavedChanges = true;
             }
         }
@@ -67,7 +72,12 @@ namespace ARMSchedulerApp
                 weekdays = "0000000".Substring(1, 7 - weekdays.Length) + weekdays;
                 sourceEvent.start_week_days = weekdays;
                 splitWeekDays();
-                calcNextStartTime(DateTime.Now.Date);
+                DateTime dt;
+                if ((DateTime.Now.Date +_sourceEvent.start_time.TimeOfDay) > DateTime.Now)
+                    dt = DateTime.Now.Date;
+                else
+                    dt = DateTime.Now.Date.AddDays(1);
+                calcNextStartTime(dt);
                 _hasUnsavedChanges = true;
             }
         }
@@ -95,7 +105,12 @@ namespace ARMSchedulerApp
             set
             {
                 sourceEvent.start_time = value;
-                calcNextStartTime(DateTime.Now.Date);
+                DateTime dt;
+                if ((DateTime.Now.Date + _sourceEvent.start_time.TimeOfDay) > DateTime.Now)
+                    dt = DateTime.Now.Date;
+                else
+                    dt = DateTime.Now.Date.AddDays(1);
+                calcNextStartTime(dt);
                 _hasUnsavedChanges = true;
             }
         }
@@ -122,11 +137,11 @@ namespace ARMSchedulerApp
 
         protected void splitWeekDays()
         {
-            int i = 0;
+            int i = 6;
             foreach (char c in sourceEvent.start_week_days)
             {
                 _eventWeekDays[i] = Int32.Parse(c.ToString());
-                i++;
+                i--;
             }
         }
 

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Threading;
+using NLog;
 
 namespace ARMSchedulerApp
 {
@@ -23,6 +24,8 @@ namespace ARMSchedulerApp
 
         MailSchedulerEvent _baseMailEvent;
         ImportSchedulerEvent _baseImportEvent;
+
+        Logger logger = LogManager.GetCurrentClassLogger();
 
         public bool needRefreshEvents
         {
@@ -89,6 +92,7 @@ namespace ARMSchedulerApp
             }
             _baseMailEvent = (_eventList.First(e => e.sourceEvent.fid_event_type == 2) as MailSchedulerEvent);
             _baseImportEvent = (_eventList.First(e => e.sourceEvent.fid_event_type == 1) as ImportSchedulerEvent);
+            logger.Info("Создан планировщик");
         }
 
         public void refreshEmails(int id_event)
@@ -101,11 +105,13 @@ namespace ARMSchedulerApp
         {
             _checkThread = new Thread(checkEvents);
             _checkThread.Start();
+            logger.Info("Запущен планировщик");
         }
 
         public void stopScheduler()
         {
             _checkThread.Abort();
+            logger.Info("Остановлен планировщик");
         }
 
         void checkEvents()
@@ -123,6 +129,7 @@ namespace ARMSchedulerApp
                         startEventWork se = she.startEvent;
                         finishEventWork f = finishedEvent;
                         se.BeginInvoke(f, null, null);
+                        logger.Info(String.Format("Запущено событие с типом {0}", she.sourceEvent.fid_event_type));
                     }
                 }
                 Thread.Sleep(60000);
@@ -137,6 +144,7 @@ namespace ARMSchedulerApp
                                                                  , Event_state: state
                                                                  , Event_errors: errMessage
                                                                  );
+            logger.Info(String.Format("Завершено событие с типом {0} результатом {1}", e.fid_event_type, state));
             _refresh();
         }
 
