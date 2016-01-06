@@ -82,6 +82,7 @@
             this.wdMailWeekDays = new DevExpress.XtraScheduler.UI.WeekDaysCheckEdit();
             this.ofdDbPath = new System.Windows.Forms.OpenFileDialog();
             this.fbdImportDir = new System.Windows.Forms.FolderBrowserDialog();
+            this.tpClose = new DevExpress.XtraTab.XtraTabPage();
             ((System.ComponentModel.ISupportInitialize)(this.tcMain)).BeginInit();
             this.tcMain.SuspendLayout();
             this.tpEventLog.SuspendLayout();
@@ -123,7 +124,8 @@
             this.tpEventLog,
             this.tpSettings,
             this.tpImport,
-            this.tpMail});
+            this.tpMail,
+            this.tpClose});
             this.tcMain.SelectedPageChanged += new DevExpress.XtraTab.TabPageChangedEventHandler(this.tcMain_SelectedPageChanged);
             this.tcMain.SelectedPageChanging += new DevExpress.XtraTab.TabPageChangingEventHandler(this.tcMain_SelectedPageChanging);
             // 
@@ -184,7 +186,7 @@
             // gridColumn2
             // 
             this.gridColumn2.Caption = "Время события";
-            this.gridColumn2.DisplayFormat.FormatString = "dd.MM.yyyy HH:mm:ss";
+            this.gridColumn2.DisplayFormat.FormatString = "dd.MM.yyyy HH:mm";
             this.gridColumn2.DisplayFormat.FormatType = DevExpress.Utils.FormatType.DateTime;
             this.gridColumn2.FieldName = "event_time";
             this.gridColumn2.Name = "gridColumn2";
@@ -209,7 +211,7 @@
             // 
             this.gridColumn5.AppearanceCell.Options.UseTextOptions = true;
             this.gridColumn5.AppearanceCell.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
-            this.gridColumn5.Caption = "Ошибки";
+            this.gridColumn5.Caption = "Сообщение";
             this.gridColumn5.ColumnEdit = this.repositoryItemMemoEdit2;
             this.gridColumn5.FieldName = "event_errors";
             this.gridColumn5.Name = "gridColumn5";
@@ -641,6 +643,12 @@
             // 
             this.ofdDbPath.FileName = "openFileDialog1";
             // 
+            // tpClose
+            // 
+            this.tpClose.Name = "tpClose";
+            this.tpClose.Size = new System.Drawing.Size(532, 415);
+            this.tpClose.Text = "Закрыть программу";
+            // 
             // fmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -742,6 +750,7 @@
         private DevExpress.XtraEditors.Repository.RepositoryItemMemoEdit repositoryItemMemoEdit2;
         private DevExpress.XtraEditors.SimpleButton btnSaveImport;
         private DevExpress.XtraEditors.SimpleButton btnSaveMail;
+        private DevExpress.XtraTab.XtraTabPage tpClose;
 
     }
 }

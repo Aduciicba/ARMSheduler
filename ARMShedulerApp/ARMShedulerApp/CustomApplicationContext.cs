@@ -193,16 +193,21 @@ namespace ARMSchedulerApp
 
         private void exitItem_Click(object sender, EventArgs e) 
 		{
+            closeApp();
+		}
+
+        public void closeApp()
+        {
             if (
                 MessageBox.Show("Вы действительно хотите закрыть программу? Исполнение событий по расписанию будет остановлено."
                                , "Подтверждение"
                                , MessageBoxButtons.YesNo) == DialogResult.Yes)
             {
-                schedulerManager.stopScheduler();                
+                schedulerManager.stopScheduler();
                 ExitThread();
 
             }
-		}
+        }
 
         protected override void ExitThreadCore()
         {

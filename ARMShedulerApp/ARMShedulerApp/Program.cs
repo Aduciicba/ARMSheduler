@@ -9,6 +9,7 @@ namespace ARMSchedulerApp
 {
     static class Program
     {
+        public static CustomApplicationContext applicationContext;
         /// <summary>
         /// Главная точка входа для приложения.
         /// </summary>
@@ -18,29 +19,21 @@ namespace ARMSchedulerApp
             if (!SingleInstance.Start()) { return; }
 
             Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
+            Application.SetCompatibleTextRenderingDefault(false);            
 
-            var applicationContext = new CustomApplicationContext();
-            Application.Run(applicationContext);
-            
-            //try
-            //{
-            //    var applicationContext = new CustomApplicationContext();
-            //    Application.Run(applicationContext);
-            //}
-            //catch (Exception ex)
-            //{
-            //    MessageBox.Show(ex.Message, "Program Terminated Unexpectedly",
-            //        MessageBoxButtons.OK, MessageBoxIcon.Error);
-            //}
+            try
+            {
+                applicationContext = new CustomApplicationContext();
+                Application.Run(applicationContext);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Необработанное исключение в работе программы",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
             SingleInstance.Stop();
-            Application.ApplicationExit += Application_ApplicationExit;
         }
 
-        static void Application_ApplicationExit(object sender, EventArgs e)
-        {
-            
-        }
         
     }
 }

@@ -127,6 +127,11 @@ namespace ARMSchedulerApp
                 }
             }
 
+            if (e.Page.Name == "tpClose")
+            {
+                Program.applicationContext.closeApp();
+            }
+
         }
 
         #endregion

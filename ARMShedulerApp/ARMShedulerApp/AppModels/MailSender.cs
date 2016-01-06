@@ -75,6 +75,7 @@ namespace ARMSchedulerApp
         {
             try
             {
+                message.To.Clear();
                 message.To.Add(new MailAddress(emailTo));
                 message.Subject = subject;
                 message.Body = content;

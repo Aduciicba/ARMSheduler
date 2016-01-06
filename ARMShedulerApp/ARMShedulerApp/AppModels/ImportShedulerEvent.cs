@@ -275,7 +275,7 @@ namespace ARMSchedulerApp
             {
                 localProfList.Add(p.Value.ToString(), p.Key);
             }
-            finishedFileProcessing(fileName);
+            deleteFile(fileName);
         }
 
         List<string[]> openCsv(string fileName)
@@ -290,7 +290,7 @@ namespace ARMSchedulerApp
                 Row++;
                 Console.WriteLine(Row);
             }
-
+            sr.Close();
             return lines;
         }
 
@@ -368,21 +368,17 @@ namespace ARMSchedulerApp
             _sh.Commit();
         }
 
-        void finishedFileProcessing(string fileName)
+        void deleteFile(string fileName)
         {
-            Process cmd = new Process()
+            try
             {
-                StartInfo = new ProcessStartInfo()
-                {
-                    FileName = "cmd.exe",
-                    //Arguments = @"/C  REN c:\full\path\*.mp3 c:\full\path\1*.mp3"
-                }
-            };
+                File.Delete(fileName);
+            }
+            catch
+            {
 
-            //Second example below is for renaming with file.mp3 to file1.mp3 format
-            cmd.StartInfo.Arguments = String.Format(@"/C  REN {0} {0}_imported", fileName);
-            cmd.Start();
-            cmd.WaitForExit();
+            }
+
         }
 
         void sendEmailNotify()
