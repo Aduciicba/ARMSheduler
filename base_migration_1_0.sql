@@ -37,14 +37,15 @@ create table Event (
 , fid_event_type INTEGER NOT NULL
 , start_week_days TEXT
 , start_time TEXT 
+, is_active TEXT
 , FOREIGN KEY(fid_event_type) REFERENCES EventType(id_event_type)
 );
 
 insert into Event(fid_event_type, start_week_days, start_time)
-values (1, '1010100', datetime('now'));
+values (1, '0000000', datetime('now', 'start of day'));
 
 insert into Event(fid_event_type, start_week_days, start_time)
-values (2, '1010100', datetime('now'));
+values (2, '0000000', datetime('now', 'start of day'));
 
 create table EventEmail (
   id_event_email INTEGER PRIMARY KEY AUTOINCREMENT
@@ -55,7 +56,7 @@ create table EventEmail (
 
 create table EventLog (
   id_event_log INTEGER PRIMARY KEY AUTOINCREMENT
-, event_time TEXT
+, event_time DATETIME
 , fid_event INTEGER NOT NULL
 , event_state TEXT
 , event_errors TEXT

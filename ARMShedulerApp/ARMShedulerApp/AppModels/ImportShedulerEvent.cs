@@ -182,7 +182,7 @@ namespace ARMSchedulerApp
         void importFile(string fileName)
         {
             List<ImportWorker> importWorkerList = new List<ImportWorker>();
-            Dictionary<string, Guid> importProfList = new Dictionary<string, Guid>();
+            List<ImportLocalProf> importProfList = new List<ImportLocalProf>();
 
             List<string[]> workers = openCsv(fileName);
             _fileInfo.Add(fileName, workers.Count);
@@ -261,17 +261,20 @@ namespace ARMSchedulerApp
                 }
                 else
                 {
-                    if (importProfList.ContainsKey(prof))
+                    if (importProfList.Count(p => p.Name == prof) > 0)
                     {
-                        impw.localProfID = importProfList[prof];
+                        impw.localProfID = importProfList.FirstOrDefault(p => p.Name == prof).ID;
                     }
                     else
                     {
                         if (impw.errors == "" || impw.errors == null)
                         {
-                            Guid profId = Guid.NewGuid();
-                            importProfList.Add(prof, profId);
-                            impw.localProfID = profId;
+                            ImportLocalProf lp = new ImportLocalProf();
+                            lp.Name = prof;
+                            lp.DeptID = impw.DeptID;
+                            lp.ID = Guid.NewGuid();
+                            importProfList.Add(lp);
+                            impw.localProfID = lp.ID;
                         }
                     }
                 }
@@ -282,14 +285,14 @@ namespace ARMSchedulerApp
             _badWorkersList.AddRange(importWorkerList.Where(w => w.errors != "" && w.errors != null));
             foreach(var p in importProfList)
             {
-                localProfList.Add(p.Value.ToString(), p.Key);
+                localProfList.Add(p.ID.ToString(), p.Name);
             }
             deleteFile(fileName);
         }
 
         List<string[]> openCsv(string fileName)
         {
-            StreamReader sr = new StreamReader(fileName);
+            StreamReader sr = new StreamReader(fileName, Encoding.Default);
             List<string[]> lines = new List<string[]>();
             int Row = 0;
             while (!sr.EndOfStream)
@@ -303,16 +306,34 @@ namespace ARMSchedulerApp
             return lines;
         }
 
-        void importLocalProfs(Dictionary<string, Guid> profList)
+        public static Encoding GetEncoding(string filename)
         {
-            const string insertProf = @"insert into LocalProf(ID, Name) Values('{0}', '{1}');";
+            // Read the BOM
+            var bom = new byte[4];
+            using (var file = new FileStream(filename, FileMode.Open, FileAccess.Read))
+            {
+                file.Read(bom, 0, 4);
+            }
+
+            // Analyze the BOM
+            if (bom[0] == 0x2b && bom[1] == 0x2f && bom[2] == 0x76) return Encoding.UTF7;
+            if (bom[0] == 0xef && bom[1] == 0xbb && bom[2] == 0xbf) return Encoding.UTF8;
+            if (bom[0] == 0xff && bom[1] == 0xfe) return Encoding.Unicode; //UTF-16LE
+            if (bom[0] == 0xfe && bom[1] == 0xff) return Encoding.BigEndianUnicode; //UTF-16BE
+            if (bom[0] == 0 && bom[1] == 0 && bom[2] == 0xfe && bom[3] == 0xff) return Encoding.UTF32;
+            return Encoding.ASCII;
+        }
+
+        void importLocalProfs(List<ImportLocalProf> profList)
+        {
+            const string insertProf = @"insert into LocalProf(ID, Name, DeptID) Values('{0}', '{1}', '{2}');";
 
             if (profList.Count == 0)
                 return;
             string command = "";
             foreach(var r in profList)
             {
-                command += String.Format(insertProf, r.Value, r.Key) + Environment.NewLine;
+                command += String.Format(insertProf, r.ID, r.Name, r.DeptID) + Environment.NewLine;
             }
             _sh.BeginTransaction();
             _sh.Execute(command);
