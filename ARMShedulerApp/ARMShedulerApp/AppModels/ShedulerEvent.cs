@@ -159,7 +159,7 @@ namespace ARMSchedulerApp
         {
             if (hasUnsavedChanges)
             {
-                CustomApplicationContext.db.Events.UpdateById_event(sourceEvent);
+                CustomApplicationContext.db.Events.Update(sourceEvent);
                 _hasUnsavedChanges = false;
             }
         }

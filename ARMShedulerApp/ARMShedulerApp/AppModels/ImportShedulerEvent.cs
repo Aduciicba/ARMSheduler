@@ -9,6 +9,8 @@ using System.IO;
 using System.Diagnostics;
 using System.Windows.Forms;
 using NLog;
+using ARMShedulerApp;
+using System.Text.RegularExpressions;
 
 namespace ARMSchedulerApp
 {
@@ -26,18 +28,22 @@ namespace ARMSchedulerApp
         int _workersCount;
         int _importedWorkersCount;
 
-        Dictionary<string, string> _localProfList;
-        Dictionary<string, string> localProfList
+        List<ImportLocalProf> _localProfList;
+        List<ImportLocalProf> localProfList
         {
             get
             {
                 if (_localProfList == null)
                 {
-                    _localProfList = new Dictionary<string, string>();
+                    _localProfList = new List<ImportLocalProf>();
                     DataTable lp = _sh.Select("select * from LocalProf");
                     foreach(DataRow r in lp.Rows)
                     {
-                        _localProfList.Add(r["Id"].ToString(), r["Name"].ToString());
+                        ImportLocalProf ilp = new ImportLocalProf();
+                        ilp.ID = Guid.Parse(r["Id"].ToString());
+                        ilp.Name = r["Name"].ToString();
+                        ilp.DeptID = Guid.Parse(r["DeptID"].ToString());
+                        _localProfList.Add(ilp);
                     }
                 }
                 return _localProfList;
@@ -79,6 +85,28 @@ namespace ARMSchedulerApp
                 return _workerList;
             }
         }
+
+        List<UtClass> _utClassList;
+        List<UtClass> UtClassList
+        {
+            get
+            {
+                if (_utClassList == null)
+                {
+                    _utClassList = new List<UtClass>();
+                    DataTable lp = _sh.Select("select * from UtClass");
+                    foreach (DataRow r in lp.Rows)
+                    {
+                        UtClass ilp = new UtClass();
+                        ilp.ID = Guid.Parse(r["ID"].ToString());
+                        ilp.Name = r["Name"].ToString();
+                        _utClassList.Add(ilp);
+                    }
+                }
+                return _utClassList;
+            }
+        }
+
         public ImportSchedulerEvent(Event _event)
         {
             _sourceEvent = _event;
@@ -108,7 +136,7 @@ namespace ARMSchedulerApp
                 getFilesList();
                 if (_filesList.Count == 0)
                     err = "Не было найдено файлов для импорта";
-                SQLiteConnection conn = new SQLiteConnection(String.Format("data source={0}", Properties.Settings.Default.KodeksDbPath));
+                SQLiteConnection conn = new SQLiteConnection(String.Format("data source={0}", ARMShedulerApp.Properties.SchedulerSettings.Default.KodeksDbPath));
                 conn.Open();
                 SQLiteCommand cmd = new SQLiteCommand(conn);
                 _sh = new SQLiteHelper(cmd);
@@ -145,7 +173,7 @@ namespace ARMSchedulerApp
                 getFilesList();
                 if (_filesList.Count == 0)
                     err = "Не было найдено файлов для импорта";
-                SQLiteConnection conn = new SQLiteConnection(String.Format("data source={0}", Properties.Settings.Default.KodeksDbPath));
+                SQLiteConnection conn = new SQLiteConnection(String.Format("data source={0}", ARMShedulerApp.Properties.SchedulerSettings.Default.KodeksDbPath));
                 conn.Open();
                 SQLiteCommand cmd = new SQLiteCommand(conn);
                 _sh = new SQLiteHelper(cmd);
@@ -164,20 +192,22 @@ namespace ARMSchedulerApp
 
         void getFilesList()
         {
-            _filesList = Directory.EnumerateFiles(Properties.Settings.Default.ImportDirPath, Properties.Settings.Default.ImportFileMask).ToList();
+            _filesList = Directory.EnumerateFiles(ARMShedulerApp.Properties.SchedulerSettings.Default.ImportDirPath, ARMShedulerApp.Properties.SchedulerSettings.Default.ImportFileMask).ToList();
         }
 
         /*
          * Структура:
-         * 0. Номер по порядку
-         * 1. Дата приема на работу
-         * 2. Дата увольнения
-         * 3. ФИО
-         * 4. Подразделение
-         * 5. Должность
-         * 6. Табельный номер
-         * 7. Пол
-         * 8. Код подразделения
+         * 0.  Номер по порядку
+         * 1.  Дата приема на работу
+         * 2.  Дата увольнения
+         * 3.  ФИО
+         * 4.  Подразделение
+         * 5.  Должность
+         * 6.  Табельный номер
+         * 7.  Пол
+         * 8.  Код подразделения
+         * 9.  СНИЛС
+         * 10. Класс условий труда
          */
         void importFile(string fileName)
         {
@@ -190,11 +220,11 @@ namespace ARMSchedulerApp
             foreach(var warr in workers)
             {
                 ImportWorker impw = new ImportWorker();
-                impw.fileName = fileName;
+                impw.FileName = fileName;
                 impw.TabNumber = warr[6].Trim();
                 if (impw.TabNumber == "")
                 {
-                    impw.errors += "Табельный номер не должен быть пустым" + Environment.NewLine;
+                    impw.Errors += "Табельный номер не должен быть пустым" + Environment.NewLine;
                 }
                 if (workerList.ContainsValue(impw.TabNumber))
                 {
@@ -207,12 +237,12 @@ namespace ARMSchedulerApp
                 }
                 else
                 {
-                    impw.errors += "Ошибка сопоставления подразделения" + Environment.NewLine;
+                    impw.Errors += "Ошибка сопоставления подразделения" + Environment.NewLine;
                 }
                 string FIO = warr[3].Trim();
                 if (FIO.Count(x => x == ' ') < 2)
                 {
-                    impw.errors += "Ошибка разбора ФИО: строка содержит менее двух пробелов" + Environment.NewLine;
+                    impw.Errors += "Ошибка разбора ФИО: строка содержит менее двух пробелов" + Environment.NewLine;
                 }
                 else
                 {
@@ -228,7 +258,7 @@ namespace ARMSchedulerApp
                     case "Женский": impw.Pol = 1; break;
                     case "М": impw.Pol = 0; break;
                     case "Ж": impw.Pol = 1; break;
-                    default: impw.errors += "Некорректно указан пол работника" + Environment.NewLine; break;
+                    default: impw.Errors += "Некорректно указан пол работника" + Environment.NewLine; break;
                 }
                 string tmpDate = warr[1].Trim() == "-" ? "" : warr[1].Trim();
                 if (tmpDate != "")
@@ -239,7 +269,7 @@ namespace ARMSchedulerApp
                     }
                     catch
                     {
-                        impw.errors += "Ошибка в дате приема на работу" + Environment.NewLine;
+                        impw.Errors += "Ошибка в дате приема на работу" + Environment.NewLine;
                     }
                 }
                 tmpDate = warr[2].Trim() == "-" ? "" : warr[2].Trim();
@@ -251,41 +281,66 @@ namespace ARMSchedulerApp
                     }
                     catch
                     {
-                        impw.errors += "Ошибка в дате увольнения" + Environment.NewLine; ;
+                        impw.Errors += "Ошибка в дате увольнения" + Environment.NewLine; 
                     }
                 }
                 string prof = warr[5].Trim();
-                if (localProfList.ContainsValue(prof))
+                if (localProfList.Count(l => (l.Name.ToLower() == prof.ToLower()) && (impw.DeptID == l.DeptID)) > 0)
                 {
-                    impw.localProfID =  Guid.Parse(localProfList.First(w => w.Value == prof).Key);
+                    impw.LocalProfID = localProfList.First(l => l.Name.ToLower() == prof.ToLower() && impw.DeptID == l.DeptID).ID;
                 }
                 else
                 {
-                    if (importProfList.Count(p => p.Name == prof) > 0)
+                    if (importProfList.Count(l => l.Name.ToLower() == prof.ToLower() && impw.DeptID == l.DeptID) > 0)
                     {
-                        impw.localProfID = importProfList.FirstOrDefault(p => p.Name == prof).ID;
+                        impw.LocalProfID = importProfList.FirstOrDefault(l => l.Name.ToLower() == prof.ToLower() && impw.DeptID == l.DeptID).ID;
                     }
                     else
                     {
-                        if (impw.errors == "" || impw.errors == null)
+                        if (impw.Errors == "" || impw.Errors == null)
                         {
                             ImportLocalProf lp = new ImportLocalProf();
                             lp.Name = prof;
                             lp.DeptID = impw.DeptID;
                             lp.ID = Guid.NewGuid();
                             importProfList.Add(lp);
-                            impw.localProfID = lp.ID;
+                            impw.LocalProfID = lp.ID;
                         }
                     }
                 }
+
+                string snils = warr[9].Trim();
+                impw.SNILS = snils;
+
+                
+                if (!String.IsNullOrEmpty(warr[10].Trim()))
+                {
+                    string numberTemplate = @"\d+";
+                    var utClass = warr[10].Trim().Split(',');
+                    for (int i = 0; i < utClass.Count(); i++)
+                    {
+                        utClass[i] = Regex.Match(utClass[i], numberTemplate).Value;
+                    }
+                    var utClassName = String.Join(".", utClass);
+                    if (UtClassList.Any(x => x.Name == utClassName))
+                    {
+                        var utClassId = UtClassList.First(x => x.Name == utClassName).ID;
+                        impw.UtClassID = utClassId;
+                    }
+                    else
+                    {
+                        impw.Errors += String.Format("Ошибка в классе условий труда {0}{1}", utClassName, Environment.NewLine);
+                    }
+                }
+
                 importWorkerList.Add(impw);
             }
             importLocalProfs(importProfList);
-            importWorkers(importWorkerList.Where(w => w.errors == "" || w.errors == null).ToList());
-            _badWorkersList.AddRange(importWorkerList.Where(w => w.errors != "" && w.errors != null));
+            importWorkers(importWorkerList.Where(w => w.Errors == "" || w.Errors == null).ToList());
+            _badWorkersList.AddRange(importWorkerList.Where(w => w.Errors != "" && w.Errors != null));
             foreach(var p in importProfList)
             {
-                localProfList.Add(p.ID.ToString(), p.Name);
+                localProfList.Add(p);
             }
             deleteFile(fileName);
         }
@@ -343,8 +398,8 @@ namespace ARMSchedulerApp
 
         void importWorkers(List<ImportWorker> workerList)
         {
-            const string insertWorker = @"insert into Worker(ID, DeptID, StartWorkDate, FiredDate, Fam, Name, Otch, Pol, TabNumber) 
-                                          values(@ID, @DeptID, @StartDate, @FiredDate, @Fam, @Name, @Otch, @Pol, @Tab)";
+            const string insertWorker = @"insert into Worker(ID, DeptID, StartWorkDate, FiredDate, Fam, Name, Otch, Pol, TabNumber, SNILS, UtClassID) 
+                                          values(@ID, @DeptID, @StartDate, @FiredDate, @Fam, @Name, @Otch, @Pol, @Tab, @Snils, @UtClassId)";
             const string updateWorker = @"update Worker 
                                           set DeptID = @DeptID
                                             , StartWorkDate = @StartDate
@@ -354,6 +409,8 @@ namespace ARMSchedulerApp
                                             , Otch = @Otch
                                             , Pol = @Pol
                                             , TabNumber = @Tab
+                                            , SNILS = @Snils
+                                            , UtClassID = @UtClassId                
                                           where ID = @ID";
 
             if (workerList.Count == 0)
@@ -372,6 +429,8 @@ namespace ARMSchedulerApp
                 param.Add("@Otch", w.Otch);
                 param.Add("@Pol", w.Pol);
                 param.Add("@Tab", w.TabNumber);
+                param.Add("@Snils", w.SNILS);
+                param.Add("@UtClassId", w.UtClassID.ToString());
                 if (w.ID == Guid.Empty)
                 {
                     w.ID = Guid.NewGuid();                    
@@ -391,7 +450,7 @@ namespace ARMSchedulerApp
                                               values('{0}', '{1}', '{2}', '{3}');";
             foreach (var w in workerList)
             {
-                command += String.Format(insertWorkerProf, Guid.NewGuid(), w.ID, w.localProfID, 1) + Environment.NewLine;
+                command += String.Format(insertWorkerProf, Guid.NewGuid(), w.ID, w.LocalProfID, 1) + Environment.NewLine;
             }
             _sh.BeginTransaction();
             _sh.Execute(command);
@@ -413,6 +472,8 @@ namespace ARMSchedulerApp
 
         void sendEmailNotify()
         {
+            if (_sourceEvent.emailList.Count == 0)
+                return;
             MailSender ms = new MailSender();
             string body = ms.getTemplate(Application.StartupPath + mailTemplateName);
             body = body.Replace("%rep_date%", DateTime.Now.ToShortDateString());
@@ -449,13 +510,13 @@ namespace ARMSchedulerApp
             {
                 string localres = "";
                 string fileres = "";
-                var workers = _badWorkersList.Where(w => w.fileName == r.Key).ToList();
+                var workers = _badWorkersList.Where(w => w.FileName == r.Key).ToList();
                 if (workers.Count > 0)
                 {
                     fileres = String.Format("<p><h5>{0}</h5></p>", r.Key) + Environment.NewLine;
                     foreach(var w in workers)
                     {
-                        localres += String.Format(row, w.TabNumber, w.Fam, w.errors);
+                        localres += String.Format(row, w.TabNumber, w.Fam, w.Errors);
                     }
 
                 }

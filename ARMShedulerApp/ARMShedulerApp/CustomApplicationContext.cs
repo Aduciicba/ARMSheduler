@@ -6,7 +6,7 @@ using System.Windows.Forms;
 using System.Reflection;
 using System.IO;
 using Simple.Data;
-using Simple.OData;
+using NLog;
 using Simple.OData.Client;
 
 namespace ARMSchedulerApp
@@ -56,26 +56,29 @@ namespace ARMSchedulerApp
 
         bool openDbConnection()
         {
-            if (Properties.Settings.Default.DBPath == "")
+            if (ARMShedulerApp.Properties.SchedulerSettings.Default.DbPath == "" ||
+                ARMShedulerApp.Properties.SchedulerSettings.Default.DbPath.IndexOf(Application.StartupPath) < 0)
             {
-                Properties.Settings.Default.DBPath = Application.StartupPath + @"\db\scheduler.sqlite";
-                Properties.Settings.Default.Save();
+                ARMShedulerApp.Properties.SchedulerSettings.Default.DbPath = Application.StartupPath + @"\scheduler.sqlite";
+                ARMShedulerApp.Properties.SchedulerSettings.Default.Save();
             }
 
-            if (!File.Exists(Properties.Settings.Default.DBPath))
+            if (!File.Exists(ARMShedulerApp.Properties.SchedulerSettings.Default.DbPath))
             {
-                MessageBox.Show("Не найден файл бпзы данных программы"
+                MessageBox.Show("Не найден файл базы данных программы или к нему отсутствует доступ"
                                , "Ошибка"
                                , MessageBoxButtons.OK
                                , MessageBoxIcon.Error);
-                Properties.Settings.Default.DBPath = "";
-                Properties.Settings.Default.Save();
+                Logger logger = LogManager.GetCurrentClassLogger();
+                logger.Error("Не найден файл базы данных программы или к нему отсутствует доступ:" + ARMShedulerApp.Properties.SchedulerSettings.Default.DbPath);
+                ARMShedulerApp.Properties.SchedulerSettings.Default.DbPath = "";
+                ARMShedulerApp.Properties.SchedulerSettings.Default.Save();
                 return false;
             }
 
             try
             {
-                db = Database.OpenFile(Properties.Settings.Default.DBPath);
+                db = Database.OpenFile(ARMShedulerApp.Properties.SchedulerSettings.Default.DbPath);
                 return true;
             }
             catch(Exception ex)

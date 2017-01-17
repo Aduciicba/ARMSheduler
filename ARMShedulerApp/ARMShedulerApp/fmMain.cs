@@ -41,7 +41,7 @@ namespace ARMSchedulerApp
             teImportTime.DataBindings.Add("EditValue", sem.baseImportEvent, "eventTime", false, DataSourceUpdateMode.OnPropertyChanged);
             wdMailWeekDays.DataBindings.Add("WeekDays", sem.baseMailEvent, "eventWeekDaysXtra", false, DataSourceUpdateMode.OnPropertyChanged);
             teMailTime.DataBindings.Add("EditValue", sem.baseMailEvent, "eventTime", false, DataSourceUpdateMode.OnPropertyChanged);
-            teFileNameMask.DataBindings.Add("Text", Properties.Settings.Default, "ImportFileMask", false, DataSourceUpdateMode.OnPropertyChanged);
+            teFileNameMask.DataBindings.Add("Text", ARMShedulerApp.Properties.SchedulerSettings.Default, "ImportFileMask", false, DataSourceUpdateMode.OnPropertyChanged);
             refreshImportPage();
             refreshMailPage();
             selectTabPage(_firstShownTabName);
@@ -130,6 +130,7 @@ namespace ARMSchedulerApp
             if (e.Page.Name == "tpClose")
             {
                 Program.applicationContext.closeApp();
+                e.Cancel = true;
             }
 
         }
@@ -140,13 +141,13 @@ namespace ARMSchedulerApp
 
         void refreshSettings()
         {
-            beImportDirPath.Text = Properties.Settings.Default.ImportDirPath;
-            beArmDbPath.Text = Properties.Settings.Default.KodeksDbPath;
-            teEmail.Text = Properties.Settings.Default.Email;
-            teMailLogin.Text = Properties.Settings.Default.EmailLogin;
-            teMailPassword.Text = Properties.Settings.Default.EmailPassword;
-            teMailServer.Text = Properties.Settings.Default.SmtpServer;
-            teMailServerPort.Text = Properties.Settings.Default.SmtpPort;
+            beImportDirPath.Text = ARMShedulerApp.Properties.SchedulerSettings.Default.ImportDirPath;
+            beArmDbPath.Text = ARMShedulerApp.Properties.SchedulerSettings.Default.KodeksDbPath;
+            teEmail.Text = ARMShedulerApp.Properties.SchedulerSettings.Default.Email;
+            teMailLogin.Text = ARMShedulerApp.Properties.SchedulerSettings.Default.EmailLogin;
+            teMailPassword.Text = ARMShedulerApp.Properties.SchedulerSettings.Default.EmailPassword;
+            teMailServer.Text = ARMShedulerApp.Properties.SchedulerSettings.Default.SmtpServer;
+            teMailServerPort.Text = ARMShedulerApp.Properties.SchedulerSettings.Default.SmtpPort;
         }
         private void btnTestMail_Click(object sender, EventArgs e)
         {
@@ -230,14 +231,14 @@ namespace ARMSchedulerApp
 
         private void btnSaveSettings_Click(object sender, EventArgs e)
         {
-            Properties.Settings.Default.ImportDirPath = beImportDirPath.Text;
-            Properties.Settings.Default.KodeksDbPath = beArmDbPath.Text;
-            Properties.Settings.Default.Email = teEmail.Text.Trim();
-            Properties.Settings.Default.EmailLogin = teMailLogin.Text.Trim();
-            Properties.Settings.Default.EmailPassword = teMailPassword.Text.Trim();
-            Properties.Settings.Default.SmtpServer = teMailServer.Text.Trim();
-            Properties.Settings.Default.SmtpPort = teMailServerPort.Text.Trim();
-            Properties.Settings.Default.Save();
+            ARMShedulerApp.Properties.SchedulerSettings.Default.ImportDirPath = beImportDirPath.Text;
+            ARMShedulerApp.Properties.SchedulerSettings.Default.KodeksDbPath = beArmDbPath.Text;
+            ARMShedulerApp.Properties.SchedulerSettings.Default.Email = teEmail.Text.Trim();
+            ARMShedulerApp.Properties.SchedulerSettings.Default.EmailLogin = teMailLogin.Text.Trim();
+            ARMShedulerApp.Properties.SchedulerSettings.Default.EmailPassword = teMailPassword.Text.Trim();
+            ARMShedulerApp.Properties.SchedulerSettings.Default.SmtpServer = teMailServer.Text.Trim();
+            ARMShedulerApp.Properties.SchedulerSettings.Default.SmtpPort = teMailServerPort.Text.Trim();
+            ARMShedulerApp.Properties.SchedulerSettings.Default.Save();
         }
         #endregion        
 
@@ -249,7 +250,7 @@ namespace ARMSchedulerApp
         private void btnSaveImport_Click(object sender, EventArgs e)
         {
             CustomApplicationContext.schedulerManager.baseImportEvent.Save();
-            Properties.Settings.Default.Save();
+            ARMShedulerApp.Properties.SchedulerSettings.Default.Save();
         }
 
         #region Редактирование Email
@@ -352,6 +353,13 @@ namespace ARMSchedulerApp
         }
 
         #endregion
+
+        private void panel1_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show(ARMShedulerApp.Properties.SchedulerSettings.Default.DbPath);
+            MessageBox.Show(ARMShedulerApp.Properties.SchedulerSettings.Default.ImportFileMask);
+            MessageBox.Show(CustomApplicationContext.db.Events.All().Count().ToString());
+        }
 
 
     }

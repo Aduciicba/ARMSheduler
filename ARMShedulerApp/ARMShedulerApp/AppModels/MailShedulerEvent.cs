@@ -35,7 +35,7 @@ namespace ARMSchedulerApp
             calcNextStartTime(DateTime.Now.Date.AddDays(1));
             try
             {
-                SQLiteConnection conn = new SQLiteConnection(String.Format("data source={0}", Properties.Settings.Default.KodeksDbPath));
+                SQLiteConnection conn = new SQLiteConnection(String.Format("data source={0}", ARMShedulerApp.Properties.SchedulerSettings.Default.KodeksDbPath));
                 conn.Open();
                 MailSender ms = new MailSender();
                 string body = ms.getTemplate(Application.StartupPath + mailTemplateName);
@@ -70,7 +70,7 @@ namespace ARMSchedulerApp
 
         public void TestEvent()
         {
-            SQLiteConnection conn = new SQLiteConnection(String.Format("data source={0}", Properties.Settings.Default.DBPath));
+            SQLiteConnection conn = new SQLiteConnection(String.Format("data source={0}", ARMShedulerApp.Properties.SchedulerSettings.Default.DbPath));
                 conn.Open();
                 MailSender ms = new MailSender();
                 Dictionary<string, int> data = getMoData(conn);

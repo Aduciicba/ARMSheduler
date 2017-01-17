@@ -22,12 +22,12 @@ namespace ARMSchedulerApp
             message = new MailMessage();
             smtp = new SmtpClient();
 
-            message.From = new MailAddress(Properties.Settings.Default.Email, fromAlias);
-            smtp.Port = Int32.Parse(Properties.Settings.Default.SmtpPort);
-            smtp.Host = Properties.Settings.Default.SmtpServer;
+            message.From = new MailAddress(ARMShedulerApp.Properties.SchedulerSettings.Default.Email, fromAlias);
+            smtp.Port = Int32.Parse(ARMShedulerApp.Properties.SchedulerSettings.Default.SmtpPort);
+            smtp.Host = ARMShedulerApp.Properties.SchedulerSettings.Default.SmtpServer;
             smtp.EnableSsl = true;
             smtp.UseDefaultCredentials = false;
-            smtp.Credentials = new NetworkCredential(Properties.Settings.Default.EmailLogin, Properties.Settings.Default.EmailPassword);
+            smtp.Credentials = new NetworkCredential(ARMShedulerApp.Properties.SchedulerSettings.Default.EmailLogin, ARMShedulerApp.Properties.SchedulerSettings.Default.EmailPassword);
             smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
         }
 

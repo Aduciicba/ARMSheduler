@@ -57,6 +57,7 @@
             this.labelControl1 = new DevExpress.XtraEditors.LabelControl();
             this.beArmDbPath = new DevExpress.XtraEditors.ButtonEdit();
             this.tpImport = new DevExpress.XtraTab.XtraTabPage();
+            this.panel1 = new System.Windows.Forms.Panel();
             this.btnSaveImport = new DevExpress.XtraEditors.SimpleButton();
             this.labelControl11 = new DevExpress.XtraEditors.LabelControl();
             this.btnDelImportEmail = new DevExpress.XtraEditors.SimpleButton();
@@ -80,9 +81,9 @@
             this.labelControl14 = new DevExpress.XtraEditors.LabelControl();
             this.teMailTime = new DevExpress.XtraEditors.TimeEdit();
             this.wdMailWeekDays = new DevExpress.XtraScheduler.UI.WeekDaysCheckEdit();
+            this.tpClose = new DevExpress.XtraTab.XtraTabPage();
             this.ofdDbPath = new System.Windows.Forms.OpenFileDialog();
             this.fbdImportDir = new System.Windows.Forms.FolderBrowserDialog();
-            this.tpClose = new DevExpress.XtraTab.XtraTabPage();
             ((System.ComponentModel.ISupportInitialize)(this.tcMain)).BeginInit();
             this.tcMain.SuspendLayout();
             this.tpEventLog.SuspendLayout();
@@ -167,6 +168,7 @@
             // gridColumn6
             // 
             this.gridColumn6.AppearanceCell.Options.UseTextOptions = true;
+            this.gridColumn6.AppearanceCell.TextOptions.VAlignment = DevExpress.Utils.VertAlignment.Center;
             this.gridColumn6.AppearanceCell.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
             this.gridColumn6.Caption = "Событие";
             this.gridColumn6.ColumnEdit = this.repositoryItemMemoEdit1;
@@ -185,6 +187,8 @@
             // 
             // gridColumn2
             // 
+            this.gridColumn2.AppearanceCell.Options.UseTextOptions = true;
+            this.gridColumn2.AppearanceCell.TextOptions.VAlignment = DevExpress.Utils.VertAlignment.Center;
             this.gridColumn2.Caption = "Время события";
             this.gridColumn2.DisplayFormat.FormatString = "dd.MM.yyyy HH:mm";
             this.gridColumn2.DisplayFormat.FormatType = DevExpress.Utils.FormatType.DateTime;
@@ -198,6 +202,8 @@
             // 
             // gridColumn4
             // 
+            this.gridColumn4.AppearanceCell.Options.UseTextOptions = true;
+            this.gridColumn4.AppearanceCell.TextOptions.VAlignment = DevExpress.Utils.VertAlignment.Center;
             this.gridColumn4.Caption = "Статус";
             this.gridColumn4.FieldName = "event_state";
             this.gridColumn4.Name = "gridColumn4";
@@ -210,6 +216,7 @@
             // gridColumn5
             // 
             this.gridColumn5.AppearanceCell.Options.UseTextOptions = true;
+            this.gridColumn5.AppearanceCell.TextOptions.VAlignment = DevExpress.Utils.VertAlignment.Center;
             this.gridColumn5.AppearanceCell.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
             this.gridColumn5.Caption = "Сообщение";
             this.gridColumn5.ColumnEdit = this.repositoryItemMemoEdit2;
@@ -407,6 +414,7 @@
             // 
             // tpImport
             // 
+            this.tpImport.Controls.Add(this.panel1);
             this.tpImport.Controls.Add(this.btnSaveImport);
             this.tpImport.Controls.Add(this.labelControl11);
             this.tpImport.Controls.Add(this.btnDelImportEmail);
@@ -422,6 +430,14 @@
             this.tpImport.Name = "tpImport";
             this.tpImport.Size = new System.Drawing.Size(532, 415);
             this.tpImport.Text = "Импорт данных";
+            // 
+            // panel1
+            // 
+            this.panel1.Location = new System.Drawing.Point(450, 298);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(37, 31);
+            this.panel1.TabIndex = 26;
+            this.panel1.Click += new System.EventHandler(this.panel1_Click);
             // 
             // btnSaveImport
             // 
@@ -639,15 +655,15 @@
             this.wdMailWeekDays.Size = new System.Drawing.Size(502, 61);
             this.wdMailWeekDays.TabIndex = 13;
             // 
-            // ofdDbPath
-            // 
-            this.ofdDbPath.FileName = "openFileDialog1";
-            // 
             // tpClose
             // 
             this.tpClose.Name = "tpClose";
             this.tpClose.Size = new System.Drawing.Size(532, 415);
             this.tpClose.Text = "Закрыть программу";
+            // 
+            // ofdDbPath
+            // 
+            this.ofdDbPath.FileName = "openFileDialog1";
             // 
             // fmMain
             // 
@@ -751,6 +767,7 @@
         private DevExpress.XtraEditors.SimpleButton btnSaveImport;
         private DevExpress.XtraEditors.SimpleButton btnSaveMail;
         private DevExpress.XtraTab.XtraTabPage tpClose;
+        private System.Windows.Forms.Panel panel1;
 
     }
 }
